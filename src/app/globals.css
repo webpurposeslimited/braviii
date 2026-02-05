@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Mint Green Theme - Fresh & Clean */
+    --background: 140 50% 96%;
+    --foreground: 0 0% 0%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 152 69% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 140 40% 94%;
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 140 30% 94%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 152 69% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 140 20% 88%;
+    --input: 140 20% 90%;
+    --ring: 152 69% 40%;
+
+    --radius: 0.5rem;
+    
+    /* Brand colors */
+    --mint: 152 69% 40%;
+    --mint-light: 140 50% 96%;
+    --mint-dark: 152 69% 35%;
+    --text-primary: 0 0% 0%;
+    --text-secondary: 0 0% 45%;
+    --surface: 140 40% 97%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Clean minimal card styles */
+  .glass {
+    @apply bg-white border border-neutral-200;
+  }
+  
+  .glass-card {
+    @apply bg-white border border-neutral-200 rounded-lg;
+  }
+
+  .glass-card-hover {
+    @apply bg-white border border-neutral-200 rounded-lg transition-all duration-200 hover:border-neutral-300;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-lg border border-neutral-200;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-in {
+    animation: animateIn 0.2s ease-out;
+  }
+
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Surface backgrounds */
+  .bg-surface {
+    @apply bg-neutral-50;
+  }
+
+  .bg-surface-raised {
+    @apply bg-white;
+  }
+}
+
+/* Custom scrollbar - Minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold tracking-tight text-black;
+}
+
+/* Loading states */
+.skeleton {
+  @apply animate-pulse bg-neutral-100 rounded;
+}
