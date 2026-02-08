@@ -22,7 +22,6 @@ CMD ["npm", "run", "dev"]
 
 # Rebuild the source code only when needed
 FROM base AS builder
-RUN apk add --no-cache openssl1.1-compat
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -34,7 +33,6 @@ RUN npm run build
 
 # Production image
 FROM base AS production
-RUN apk add --no-cache openssl1.1-compat
 WORKDIR /app
 
 ENV NODE_ENV=production
