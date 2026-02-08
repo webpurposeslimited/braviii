@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import Google from 'next-auth/providers/google';
 import { prisma } from './prisma';
 
 export const authConfig: NextAuthConfig = {
@@ -16,10 +15,6 @@ export const authConfig: NextAuthConfig = {
     error: '/login',
   },
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
     Credentials({
       name: 'credentials',
       credentials: {

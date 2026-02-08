@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, Chrome } from 'lucide-react';
+import { Mail, Lock, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +23,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +51,8 @@ export default function LoginPage() {
           variant: 'destructive',
         });
       } else {
-        router.push('/dashboard');
+        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+        window.location.href = callbackUrl;
       }
     } catch {
       toast({
@@ -61,10 +63,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/dashboard' });
   };
 
   return (
@@ -140,24 +138,6 @@ export default function LoginPage() {
             )}
           </Button>
         </form>
-
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-neutral-200" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-neutral-500">Or continue with</span>
-          </div>
-        </div>
-
-        <Button
-          variant="outline"
-          className="w-full border-neutral-300 hover:bg-neutral-50"
-          onClick={handleGoogleSignIn}
-        >
-          <Chrome className="mr-2 h-4 w-4" />
-          Google
-        </Button>
 
         <p className="mt-6 text-center text-sm text-neutral-600">
           Don&apos;t have an account?{' '}

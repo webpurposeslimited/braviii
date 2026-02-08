@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { User, Mail, Lock, Building, Loader2, Chrome, AlertTriangle } from 'lucide-react';
+import { User, Mail, Lock, Building, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -75,10 +75,6 @@ export default function SignupPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/dashboard' });
   };
 
   return (
@@ -180,24 +176,6 @@ export default function SignupPage() {
             )}
           </Button>
         </form>
-
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-neutral-200" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-neutral-500">Or continue with</span>
-          </div>
-        </div>
-
-        <Button
-          variant="outline"
-          className="w-full border-neutral-300 hover:bg-neutral-50"
-          onClick={handleGoogleSignIn}
-        >
-          <Chrome className="mr-2 h-4 w-4" />
-          Google
-        </Button>
 
         <p className="mt-6 text-center text-sm text-neutral-600">
           Already have an account?{' '}
