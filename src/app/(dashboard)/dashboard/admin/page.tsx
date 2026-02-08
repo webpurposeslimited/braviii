@@ -37,7 +37,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-// TODO: Wire to real API endpoints
 const adminStats = {
   totalWorkspaces: 0,
   activeUsers: 0,
@@ -557,7 +556,7 @@ export default function AdminPage() {
                         <TrendingUp className="h-5 w-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="text-2xl font-semibold text-slate-900">2.4M</p>
+                        <p className="text-2xl font-semibold text-slate-900">0</p>
                         <p className="text-sm text-slate-500">Total Credits Issued</p>
                       </div>
                     </div>
@@ -570,7 +569,7 @@ export default function AdminPage() {
                         <Activity className="h-5 w-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="text-2xl font-semibold text-slate-900">245K</p>
+                        <p className="text-2xl font-semibold text-slate-900">0</p>
                         <p className="text-sm text-slate-500">Credits Used (30d)</p>
                       </div>
                     </div>
@@ -583,7 +582,7 @@ export default function AdminPage() {
                         <CreditCard className="h-5 w-5 text-purple-600" />
                       </div>
                       <div>
-                        <p className="text-2xl font-semibold text-slate-900">$12.4K</p>
+                        <p className="text-2xl font-semibold text-slate-900">$0</p>
                         <p className="text-sm text-slate-500">Revenue (30d)</p>
                       </div>
                     </div>

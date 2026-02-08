@@ -22,10 +22,10 @@ const sections = [
     color: 'from-blue-500 to-cyan-500',
   },
   {
-    title: 'Enrichment',
-    description: 'Enrich lead data with company info',
+    title: 'Lead Finder',
+    description: 'Find new leads via Google Maps & Apollo',
     icon: Workflow,
-    href: '/dashboard/enrichment',
+    href: '/dashboard/lead-finder',
     color: 'from-purple-500 to-pink-500',
   },
   {

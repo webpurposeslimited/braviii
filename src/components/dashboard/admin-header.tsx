@@ -49,57 +49,54 @@ export function AdminHeader({ user }: AdminHeaderProps) {
   };
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-900">
+    <header className="h-16 border-b border-slate-200 bg-white">
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-3">
-          <Shield className="h-5 w-5 text-blue-400" />
-          <span className="text-sm font-medium text-slate-300">Administration</span>
+          <Shield className="h-5 w-5 text-blue-600" />
+          <span className="text-sm font-medium text-slate-600">Administration</span>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="relative text-slate-400 hover:text-white hover:bg-slate-800">
+          <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <Bell className="h-5 w-5" />
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="gap-2 pl-2 hover:bg-slate-800">
+              <Button variant="ghost" className="gap-2 pl-2 hover:bg-slate-100">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.image || undefined} alt={user.name || 'Admin'} />
                   <AvatarFallback className="bg-blue-600 text-white text-sm">
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-sm text-slate-300">{user.name || 'Admin'}</span>
-                <ChevronDown className="h-4 w-4 text-slate-500" />
+                <span className="text-sm text-slate-700">{user.name || 'Admin'}</span>
+                <ChevronDown className="h-4 w-4 text-slate-400" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-slate-900 border-slate-700">
+            <DropdownMenuContent align="end" className="w-56 bg-white border-slate-200">
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium text-white">{user.name}</p>
-                  <p className="text-xs text-slate-400">{user.email}</p>
+                  <p className="text-sm font-medium text-slate-900">{user.name}</p>
+                  <p className="text-xs text-slate-500">{user.email}</p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-slate-700" />
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => router.push('/admin/users')}
-                className="text-slate-300 hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white"
               >
-                <User className="mr-2 h-4 w-4 text-slate-500" />
+                <User className="mr-2 h-4 w-4" />
                 Manage Users
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => router.push('/admin/api-settings')}
-                className="text-slate-300 hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white"
               >
-                <Settings className="mr-2 h-4 w-4 text-slate-500" />
+                <Settings className="mr-2 h-4 w-4" />
                 API Settings
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-slate-700" />
+              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleSignOut}
-                className="text-slate-300 hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 Sign out

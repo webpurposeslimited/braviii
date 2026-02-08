@@ -20,7 +20,6 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-// TODO: Wire to real API
 const taskStats = [
   { label: 'Pending', value: 0, icon: Clock, color: 'text-amber-600' },
   { label: 'Completed Today', value: 0, icon: CheckCircle, color: 'text-emerald-600' },

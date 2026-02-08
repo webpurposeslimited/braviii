@@ -6,19 +6,17 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
   Users,
-  Database,
   Mail,
   CheckCircle,
-  Workflow,
   Linkedin,
   BarChart3,
   Settings,
   CreditCard,
-  HelpCircle,
   ChevronLeft,
   ChevronRight,
   MessageSquare,
   Shield,
+  Search,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -27,8 +25,7 @@ import { useState } from 'react';
 const mainNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Leads', href: '/dashboard/leads', icon: Users },
-  { name: 'Companies', href: '/dashboard/companies', icon: Database },
-  { name: 'Enrichment', href: '/dashboard/enrichment', icon: Workflow },
+  { name: 'Lead Finder', href: '/dashboard/lead-finder', icon: Search },
   { name: 'Verification', href: '/dashboard/verification', icon: CheckCircle },
   { name: 'Sequences', href: '/dashboard/sequences', icon: Mail },
   { name: 'LinkedIn Tasks', href: '/dashboard/linkedin', icon: Linkedin },

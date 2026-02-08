@@ -883,6 +883,44 @@ enum CreditType {
   ADJUSTMENT
 }
 
+// ==================== PLANS (ADMIN-MANAGED) ====================
+
+model Plan {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  slug          String   @unique
+  price         Int      @default(0)
+  interval      String   @default("month")
+  description   String?
+  features      String[]
+  limitsJson    Json?
+  active        Boolean  @default(true)
+  popular       Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  stripePriceId String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+}
+
+// ==================== SYSTEM SETTINGS (ADMIN KEY-VALUE STORE) ====================
+
+model SystemSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  group     String   @default("general")
+  encrypted Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([group])
+  @@index([key])
+}
+
 // ==================== RBAC - ADMIN ROLES & PERMISSIONS ====================
 
 model AdminRole {

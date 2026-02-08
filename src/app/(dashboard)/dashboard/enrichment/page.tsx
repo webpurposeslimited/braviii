@@ -25,7 +25,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
-// TODO: Wire to real API
 const enrichmentStats = {
   totalEnriched: 0,
   thisMonth: 0,
