@@ -12,7 +12,7 @@
 3. [Install Docker & Docker Compose](#3-install-docker--docker-compose)
 4. [Clone the Repository](#4-clone-the-repository)
 5. [Generate Secrets & Create .env.production](#5-generate-secrets--create-envproduction)
-6. [Update Nginx Config with Your Domain](#6-update-nginx-config-with-your-domain)
+6. [Update Nginx Config with Your Domain](#6-update-nginx-config-with-bravilio)
 7. [SSL Certificate (Let's Encrypt)](#7-ssl-certificate-lets-encrypt)
 8. [Build & Start Everything](#8-build--start-everything)
 9. [Initialize Database & Seed](#9-initialize-database--seed)
@@ -146,15 +146,15 @@ cp .env.example .env.production
 nano .env.production
 ```
 
-Fill in **every** variable below. Replace `your-domain.com` and placeholder values:
+Fill in **every** variable below. Replace `bravilio.com` and placeholder values:
 
 ```env
 # ─── Application ────────────────────────────────────────────
 NODE_ENV=production
-NEXTAUTH_URL=https://your-domain.com
+NEXTAUTH_URL=https://bravilio.com
 NEXTAUTH_SECRET=<paste-generated-value>
 JWT_SECRET=<paste-generated-value>
-NEXT_PUBLIC_APP_URL=https://your-domain.com
+NEXT_PUBLIC_APP_URL=https://bravilio.com
 NEXT_PUBLIC_APP_NAME=Bravilio
 
 # ─── Database (Postgres inside Docker) ─────────────────────
@@ -190,7 +190,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-SMTP_FROM=noreply@your-domain.com
+SMTP_FROM=noreply@bravilio.com
 
 # ─── S3 / Object Storage (optional) ───────────────────────
 S3_ACCESS_KEY=
@@ -225,12 +225,12 @@ MAX_UPLOAD_SIZE_MB=10
 nano nginx/nginx.conf
 ```
 
-Find these three lines and replace `your-domain.com` with your actual domain:
+Find these three lines and replace `bravilio.com` with your actual domain:
 
 ```
-server_name your-domain.com;
-ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
-ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
+server_name bravilio.com;
+ssl_certificate /etc/letsencrypt/live/bravilio.com/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/bravilio.com/privkey.pem;
 ```
 
 Save and exit (`Ctrl+X`, then `Y`, then `Enter`).
@@ -249,10 +249,10 @@ sudo lsof -i :80  # should show nothing
 
 # Obtain certificate (replace with your domain)
 sudo certbot certonly --standalone \
-  -d your-domain.com \
-  -d www.your-domain.com \
+  -d bravilio.com \
+  -d www.bravilio.com \
   --non-interactive --agree-tos \
-  -m admin@your-domain.com
+  -m admin@bravilio.com
 
 # Copy certs where Docker can read them
 sudo cp -rL /etc/letsencrypt/live nginx/ssl/
@@ -262,7 +262,7 @@ sudo chown -R $USER:$USER nginx/ssl
 
 Verify cert files exist:
 ```bash
-ls -la nginx/ssl/live/your-domain.com/
+ls -la nginx/ssl/live/bravilio.com/
 # Should show: fullchain.pem  privkey.pem  cert.pem  chain.pem
 ```
 
@@ -338,16 +338,16 @@ curl -s http://localhost:3000/api/health
 # Should return: {"status":"ok"} or similar
 
 # Test HTTPS (replace with your domain)
-curl -s https://your-domain.com
+curl -s https://bravilio.com
 # Should return HTML
 
 # Check all logs for errors
 docker-compose -f docker-compose.prod.yml logs --tail=50
 ```
 
-Open `https://your-domain.com` in your browser. You should see the Bravilio landing page.
+Open `https://bravilio.com` in your browser. You should see the Bravilio landing page.
 
-**First login**: Go to `https://your-domain.com/login` and sign in with:
+**First login**: Go to `https://bravilio.com/login` and sign in with:
 - Email: `admin@bravilio.com`
 - Password: `Admin123!`
 - **Change this password immediately** in Settings.
@@ -556,7 +556,7 @@ docker-compose -f docker-compose.prod.yml exec redis redis-cli -a "$REDIS_PASSWO
 sudo certbot certificates
 
 # Test SSL handshake
-openssl s_client -connect your-domain.com:443 -servername your-domain.com
+openssl s_client -connect bravilio.com:443 -servername bravilio.com
 
 # Check nginx logs
 docker-compose -f docker-compose.prod.yml logs nginx
@@ -590,7 +590,7 @@ Before going live, verify:
 - [ ] `POSTGRES_PASSWORD` is strong and unique
 - [ ] `REDIS_PASSWORD` is set
 - [ ] Firewall only allows ports 22, 80, 443
-- [ ] SSL certificate is valid (`curl -I https://your-domain.com`)
+- [ ] SSL certificate is valid (`curl -I https://bravilio.com`)
 - [ ] Fail2ban is running (`sudo systemctl status fail2ban`)
 - [ ] Default admin password has been changed
 - [ ] Automated backups are scheduled (`crontab -l`)

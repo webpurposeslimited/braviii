@@ -121,9 +121,9 @@ Configure `.env`:
 ```env
 # Application
 NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://your-domain.com
+NEXT_PUBLIC_APP_URL=https://bravilio.com
 NEXT_PUBLIC_APP_NAME=Bravilio
-NEXTAUTH_URL=https://your-domain.com
+NEXTAUTH_URL=https://bravilio.com
 
 # Database
 DATABASE_URL=postgresql://bravilio:your-secure-password@localhost:5432/bravilio?schema=public
@@ -138,7 +138,7 @@ JWT_SECRET=your-jwt-secret-min-32-chars
 # LOCAL FILE STORAGE (instead of S3)
 STORAGE_TYPE=local
 STORAGE_LOCAL_PATH=/var/bravilio/uploads
-STORAGE_PUBLIC_URL=https://your-domain.com/uploads
+STORAGE_PUBLIC_URL=https://bravilio.com/uploads
 
 # Stripe (Get from dashboard.stripe.com)
 STRIPE_SECRET_KEY=sk_test_xxx
@@ -210,13 +210,13 @@ echo "DATABASE_PASSWORD=$(openssl rand -base64 24)"
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create project → APIs & Services → Credentials
 3. Create OAuth 2.0 Client ID
-4. Add authorized redirect: `https://your-domain.com/api/auth/callback/google`
+4. Add authorized redirect: `https://bravilio.com/api/auth/callback/google`
 5. Copy Client ID and Secret to `.env`
 
 ### Microsoft OAuth
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Azure AD → App registrations → New registration
-3. Add redirect URI: `https://your-domain.com/api/auth/callback/microsoft`
+3. Add redirect URI: `https://bravilio.com/api/auth/callback/microsoft`
 4. Certificates & secrets → New client secret
 5. Copy Application ID and Secret to `.env`
 
@@ -338,18 +338,18 @@ upstream nextjs_backend {
 # Redirect HTTP to HTTPS
 server {
     listen 80;
-    server_name your-domain.com www.your-domain.com;
+    server_name bravilio.com www.bravilio.com;
     return 301 https://$server_name$request_uri;
 }
 
 # HTTPS server
 server {
     listen 443 ssl http2;
-    server_name your-domain.com www.your-domain.com;
+    server_name bravilio.com www.bravilio.com;
 
     # SSL Configuration (will be added after certbot)
-    ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/bravilio.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bravilio.com/privkey.pem;
     ssl_session_timeout 1d;
     ssl_session_cache shared:SSL:50m;
     ssl_session_tickets off;
@@ -415,7 +415,7 @@ sudo apt install -y certbot python3-certbot-nginx
 sudo systemctl stop nginx
 
 # Obtain certificate
-sudo certbot certonly --standalone -d your-domain.com -d www.your-domain.com
+sudo certbot certonly --standalone -d bravilio.com -d www.bravilio.com
 
 # Start Nginx
 sudo systemctl start nginx
@@ -635,6 +635,7 @@ sudo nano /etc/postgresql/14/main/postgresql.conf
 ```
 
 Add:
+
 ```conf
 shared_buffers = 256MB
 effective_cache_size = 1GB

@@ -76,11 +76,6 @@ export async function GET(
               domain: true,
             },
           },
-          emailVerification: {
-            select: {
-              status: true,
-            },
-          },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
@@ -89,7 +84,7 @@ export async function GET(
       prisma.lead.count({ where }),
     ]);
 
-    return paginatedResponse(leads, { page, limit, total });
+    return paginatedResponse(leads, page, limit, total);
   } catch (error) {
     console.error('Get leads error:', error);
     return errorResponse(ErrorCodes.INTERNAL_ERROR, 'Failed to fetch leads', 500);
