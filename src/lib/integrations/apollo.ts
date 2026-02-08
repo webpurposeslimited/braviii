@@ -195,14 +195,14 @@ export async function createApolloClient(workspaceId: string): Promise<ApolloCli
     where: {
       workspaceId,
       type: 'APOLLO',
-      isActive: true,
+      status: 'ACTIVE',
     },
   });
 
-  if (!integration?.encryptedCredentials) {
+  if (!integration?.credentials) {
     return null;
   }
 
-  const credentials = JSON.parse(integration.encryptedCredentials);
+  const credentials = JSON.parse(integration.credentials);
   return new ApolloClient(credentials.apiKey);
 }
