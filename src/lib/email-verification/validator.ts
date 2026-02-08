@@ -4,6 +4,8 @@ import { promisify } from 'util';
 
 const resolveMx = promisify(dns.resolveMx);
 const resolveTxt = promisify(dns.resolveTxt);
+const resolve4 = promisify(dns.resolve4);
+const resolveNs = promisify(dns.resolveNs);
 
 export type VerificationStatus = 'valid' | 'invalid' | 'risky' | 'catch_all' | 'unknown';
 
@@ -20,6 +22,7 @@ export type VerificationReason =
   | 'catch_all_detected'
   | 'role_account'
   | 'unknown_error'
+  | 'dns_verified'
   | 'valid';
 
 export interface VerificationResult {
@@ -33,6 +36,19 @@ export interface VerificationResult {
   isCatchAll: boolean;
   smtpResponse: string | null;
   verifiedAt: Date;
+  dnsScore?: number;
+  hasSPF?: boolean;
+  hasDMARC?: boolean;
+}
+
+interface DnsCheckResult {
+  hasSPF: boolean;
+  hasDMARC: boolean;
+  hasARecord: boolean;
+  hasNS: boolean;
+  spfRecord: string | null;
+  dmarcRecord: string | null;
+  score: number;
 }
 
 const DISPOSABLE_DOMAINS = new Set([
@@ -45,6 +61,12 @@ const DISPOSABLE_DOMAINS = new Set([
   'emailondeck.com', 'mintemail.com', 'tempmailaddress.com', 'burnermail.io',
   'throwawaymail.com', 'mailcatch.com', 'mytrashmail.com', 'spamgourmet.com',
   'maildrop.cc', 'inboxalias.com', 'jetable.org', 'spamex.com', 'tempinbox.com',
+  'guerrillamail.info', 'guerrillamail.de', 'guerrillamail.biz', 'harakirimail.com',
+  'mailexpire.com', 'mailforspam.com', 'safetymail.info', 'filzmail.com',
+  'trashymail.com', 'trashemail.de', 'wegwerfmail.de', 'wegwerfmail.net',
+  'mailzilla.com', 'spamfree24.org', 'mailnull.com', 'e4ward.com',
+  'mytemp.email', 'tempail.com', 'tempmails.net', 'tempmailo.com',
+  'throwam.com', 'tmail.ws', 'trash-mail.at', 'trashmail.me',
 ]);
 
 const ROLE_ACCOUNTS = new Set([
@@ -67,14 +89,42 @@ const KNOWN_PROVIDERS: Record<string, string[]> = {
   'AOL': ['aol.com', 'mx.aol.com'],
   'Fastmail': ['fastmail.com', 'messagingengine.com'],
   'GoDaddy': ['secureserver.net', 'godaddy.com'],
+  'Yandex': ['yandex.ru', 'yandex.net'],
+  'Mail.ru': ['mail.ru', 'mxs.mail.ru'],
+  'Amazon SES': ['amazonses.com', 'amazonaws.com'],
+  'SendGrid': ['sendgrid.net'],
+  'Mailgun': ['mailgun.org'],
 };
 
-const SMTP_TIMEOUT = 10000;
-const CONNECTION_TIMEOUT = 5000;
+// Free email providers where any valid-looking address is likely real
+const FREE_EMAIL_PROVIDERS: Record<string, string[]> = {
+  'gmail.com': ['Google'],
+  'yahoo.com': ['Yahoo'],
+  'outlook.com': ['Microsoft'],
+  'hotmail.com': ['Microsoft'],
+  'live.com': ['Microsoft'],
+  'aol.com': ['AOL'],
+  'icloud.com': ['iCloud'],
+  'me.com': ['iCloud'],
+  'protonmail.com': ['ProtonMail'],
+  'proton.me': ['ProtonMail'],
+  'pm.me': ['ProtonMail'],
+  'zoho.com': ['Zoho'],
+  'yandex.com': ['Yandex'],
+  'mail.ru': ['Mail.ru'],
+  'gmx.com': ['GMX'],
+  'fastmail.com': ['Fastmail'],
+};
+
+const SMTP_TIMEOUT = 8000;
+const CONNECTION_TIMEOUT = 4000;
+// Quick probe to check if port 25 is even reachable
+const SMTP_PROBE_TIMEOUT = 3000;
 
 export class EmailValidator {
   private fromEmail: string;
   private fromDomain: string;
+  private smtpAvailable: boolean | null = null;
 
   constructor(fromEmail: string = 'verify@bravilio.com') {
     this.fromEmail = fromEmail;
@@ -129,32 +179,46 @@ export class EmailValidator {
       result.mxRecords = mxResult.records;
       result.provider = this.detectProvider(mxResult.records);
 
-      // Step 5: SMTP verification (safe mode - no DATA command)
-      const smtpResult = await this.verifySmtp(result.email, mxResult.records);
-      
-      result.smtpResponse = smtpResult.response;
-      result.isCatchAll = smtpResult.isCatchAll;
+      // Step 5: Enhanced DNS checks (SPF, DMARC, A record)
+      const dnsChecks = await this.performDnsChecks(domain);
+      result.hasSPF = dnsChecks.hasSPF;
+      result.hasDMARC = dnsChecks.hasDMARC;
+      result.dnsScore = dnsChecks.score;
 
-      if (smtpResult.status === 'valid') {
-        if (result.isCatchAll) {
-          result.status = 'catch_all';
-          result.reason = 'catch_all_detected';
-        } else if (result.isRoleAccount) {
+      // Step 6: Try SMTP verification (with quick probe first)
+      const smtpReachable = await this.isSmtpReachable(mxResult.records[0]);
+
+      if (smtpReachable) {
+        const smtpResult = await this.verifySmtp(result.email, mxResult.records);
+        result.smtpResponse = smtpResult.response;
+        result.isCatchAll = smtpResult.isCatchAll;
+
+        if (smtpResult.status === 'valid') {
+          if (result.isCatchAll) {
+            result.status = 'catch_all';
+            result.reason = 'catch_all_detected';
+          } else if (result.isRoleAccount) {
+            result.status = 'risky';
+            result.reason = 'role_account';
+          } else {
+            result.status = 'valid';
+            result.reason = 'valid';
+          }
+        } else if (smtpResult.status === 'invalid') {
+          result.status = 'invalid';
+          result.reason = smtpResult.reason as VerificationReason;
+        } else if (smtpResult.status === 'risky') {
           result.status = 'risky';
-          result.reason = 'role_account';
+          result.reason = smtpResult.reason as VerificationReason;
         } else {
-          result.status = 'valid';
-          result.reason = 'valid';
+          // SMTP returned unknown — fall through to DNS scoring
+          result.smtpResponse = smtpResult.response;
+          return this.applyDnsScoring(result, domain, localPart, dnsChecks);
         }
-      } else if (smtpResult.status === 'invalid') {
-        result.status = 'invalid';
-        result.reason = smtpResult.reason as VerificationReason;
-      } else if (smtpResult.status === 'risky') {
-        result.status = 'risky';
-        result.reason = smtpResult.reason as VerificationReason;
       } else {
-        result.status = 'unknown';
-        result.reason = smtpResult.reason as VerificationReason;
+        // Port 25 not reachable — use DNS-based scoring
+        result.smtpResponse = 'Port 25 not reachable, using DNS-based verification';
+        return this.applyDnsScoring(result, domain, localPart, dnsChecks);
       }
 
       return result;
@@ -164,6 +228,212 @@ export class EmailValidator {
       result.smtpResponse = error instanceof Error ? error.message : 'Unknown error';
       return result;
     }
+  }
+
+  /**
+   * DNS-based scoring when SMTP is unavailable.
+   * Combines MX, SPF, DMARC, provider reputation, and free-email checks
+   * to produce a confidence score without needing port 25.
+   */
+  private applyDnsScoring(
+    result: VerificationResult,
+    domain: string,
+    localPart: string,
+    dnsChecks: DnsCheckResult
+  ): VerificationResult {
+    const isFreeEmail = FREE_EMAIL_PROVIDERS[domain] !== undefined;
+    const hasKnownProvider = result.provider !== null;
+
+    // High-confidence cases
+    if (isFreeEmail && dnsChecks.score >= 70) {
+      // Gmail, Outlook, Yahoo etc. — valid MX + SPF + DMARC = likely valid
+      if (result.isRoleAccount) {
+        result.status = 'risky';
+        result.reason = 'role_account';
+      } else {
+        result.status = 'valid';
+        result.reason = 'dns_verified';
+      }
+      return result;
+    }
+
+    if (hasKnownProvider && dnsChecks.score >= 60) {
+      // Custom domain hosted on known provider with good DNS
+      if (result.isRoleAccount) {
+        result.status = 'risky';
+        result.reason = 'role_account';
+      } else {
+        result.status = 'risky';
+        result.reason = 'dns_verified';
+      }
+      return result;
+    }
+
+    // Medium-confidence: valid MX but no known provider
+    if (dnsChecks.score >= 50) {
+      result.status = 'risky';
+      result.reason = 'dns_verified';
+      return result;
+    }
+
+    // Low-confidence: MX exists but poor DNS setup
+    if (dnsChecks.score >= 30) {
+      result.status = 'risky';
+      result.reason = 'dns_verified';
+      return result;
+    }
+
+    // Very low confidence
+    result.status = 'unknown';
+    result.reason = 'no_smtp';
+    return result;
+  }
+
+  /**
+   * Perform comprehensive DNS checks on the domain.
+   * Returns a score from 0-100 based on DNS health.
+   */
+  private async performDnsChecks(domain: string): Promise<DnsCheckResult> {
+    const result: DnsCheckResult = {
+      hasSPF: false,
+      hasDMARC: false,
+      hasARecord: false,
+      hasNS: false,
+      spfRecord: null,
+      dmarcRecord: null,
+      score: 0,
+    };
+
+    const checks = await Promise.allSettled([
+      this.checkSPF(domain),
+      this.checkDMARC(domain),
+      this.checkARecord(domain),
+      this.checkNS(domain),
+    ]);
+
+    // SPF check
+    if (checks[0].status === 'fulfilled' && checks[0].value) {
+      result.hasSPF = true;
+      result.spfRecord = checks[0].value;
+      result.score += 25;
+    }
+
+    // DMARC check
+    if (checks[1].status === 'fulfilled' && checks[1].value) {
+      result.hasDMARC = true;
+      result.dmarcRecord = checks[1].value;
+      result.score += 25;
+    }
+
+    // A record check
+    if (checks[2].status === 'fulfilled' && checks[2].value) {
+      result.hasARecord = true;
+      result.score += 15;
+    }
+
+    // NS record check
+    if (checks[3].status === 'fulfilled' && checks[3].value) {
+      result.hasNS = true;
+      result.score += 10;
+    }
+
+    // Bonus: MX records already verified (called before this), so add base score
+    result.score += 25;
+
+    return result;
+  }
+
+  private async checkSPF(domain: string): Promise<string | null> {
+    try {
+      const records = await resolveTxt(domain);
+      for (const record of records) {
+        const txt = record.join('');
+        if (txt.toLowerCase().startsWith('v=spf1')) {
+          return txt;
+        }
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  private async checkDMARC(domain: string): Promise<string | null> {
+    try {
+      const records = await resolveTxt(`_dmarc.${domain}`);
+      for (const record of records) {
+        const txt = record.join('');
+        if (txt.toLowerCase().startsWith('v=dmarc1')) {
+          return txt;
+        }
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  private async checkARecord(domain: string): Promise<boolean> {
+    try {
+      const records = await resolve4(domain);
+      return records.length > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  private async checkNS(domain: string): Promise<boolean> {
+    try {
+      const records = await resolveNs(domain);
+      return records.length > 0;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Quick probe to check if port 25 is reachable at all.
+   * Caches the result so we don't waste time on subsequent calls.
+   */
+  private async isSmtpReachable(mxHost: string): Promise<boolean> {
+    if (this.smtpAvailable !== null) return this.smtpAvailable;
+
+    return new Promise((resolve) => {
+      const socket = new net.Socket();
+      const timeout = setTimeout(() => {
+        socket.removeAllListeners();
+        socket.destroy();
+        this.smtpAvailable = false;
+        resolve(false);
+      }, SMTP_PROBE_TIMEOUT);
+
+      socket.on('connect', () => {
+        clearTimeout(timeout);
+        socket.removeAllListeners();
+        socket.destroy();
+        this.smtpAvailable = true;
+        resolve(true);
+      });
+
+      socket.on('error', () => {
+        clearTimeout(timeout);
+        socket.removeAllListeners();
+        socket.destroy();
+        this.smtpAvailable = false;
+        resolve(false);
+      });
+
+      socket.on('timeout', () => {
+        clearTimeout(timeout);
+        socket.removeAllListeners();
+        socket.destroy();
+        this.smtpAvailable = false;
+        resolve(false);
+      });
+
+      socket.setTimeout(SMTP_PROBE_TIMEOUT);
+      socket.connect(25, mxHost);
+    });
   }
 
   private isValidSyntax(email: string): boolean {

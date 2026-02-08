@@ -30,7 +30,9 @@ const statusConfig: Record<string, { icon: any; color: string; bg: string; borde
 
 const reasonLabels: Record<string, string> = {
   valid: 'Verified mailbox exists',
+  dns_verified: 'Verified via DNS (MX, SPF, DMARC)',
   mx_missing: 'No MX records found',
+  syntax_invalid: 'Invalid email format',
   disposable: 'Disposable email domain',
   mailbox_unavailable: 'Mailbox does not exist',
   mailbox_full: 'Mailbox is full',
@@ -38,6 +40,7 @@ const reasonLabels: Record<string, string> = {
   role_account: 'Role-based email (e.g., info@)',
   rate_limited: 'Server rate limited',
   timeout: 'Verification timeout',
+  no_smtp: 'SMTP not reachable',
   blocked: 'Connection blocked',
   unknown_error: 'Unable to verify',
 };
@@ -169,7 +172,7 @@ export default function VerificationPage() {
                             </p>
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                           <div>
                             <p className="text-slate-500">Reason</p>
                             <p className="font-medium text-slate-900">{reasonLabels[verificationResult.reason] || verificationResult.reason}</p>
@@ -178,6 +181,40 @@ export default function VerificationPage() {
                             <div>
                               <p className="text-slate-500">Provider</p>
                               <p className="font-medium text-slate-900">{verificationResult.provider}</p>
+                            </div>
+                          )}
+                          {verificationResult.dnsScore !== undefined && (
+                            <div>
+                              <p className="text-slate-500">DNS Score</p>
+                              <p className="font-medium text-slate-900">{verificationResult.dnsScore}/100</p>
+                            </div>
+                          )}
+                          {verificationResult.hasSPF !== undefined && (
+                            <div>
+                              <p className="text-slate-500">SPF Record</p>
+                              <p className={`font-medium ${verificationResult.hasSPF ? 'text-green-700' : 'text-slate-400'}`}>
+                                {verificationResult.hasSPF ? 'Found' : 'Not found'}
+                              </p>
+                            </div>
+                          )}
+                          {verificationResult.hasDMARC !== undefined && (
+                            <div>
+                              <p className="text-slate-500">DMARC Record</p>
+                              <p className={`font-medium ${verificationResult.hasDMARC ? 'text-green-700' : 'text-slate-400'}`}>
+                                {verificationResult.hasDMARC ? 'Found' : 'Not found'}
+                              </p>
+                            </div>
+                          )}
+                          {verificationResult.isDisposable && (
+                            <div>
+                              <p className="text-slate-500">Disposable</p>
+                              <p className="font-medium text-red-700">Yes</p>
+                            </div>
+                          )}
+                          {verificationResult.isRoleAccount && (
+                            <div>
+                              <p className="text-slate-500">Role Account</p>
+                              <p className="font-medium text-amber-700">Yes</p>
                             </div>
                           )}
                         </div>

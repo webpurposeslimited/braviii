@@ -96,7 +96,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
               ))}
               <DropdownMenuSeparator className="bg-neutral-200" />
               <DropdownMenuItem 
-                onClick={() => router.push('/dashboard/settings/workspaces')}
+                onClick={() => router.push('/dashboard/settings?tab=workspace')}
                 className="text-neutral-600 hover:bg-neutral-100 hover:text-black"
               >
                 <Plus className="mr-2 h-4 w-4 text-neutral-400" />
@@ -138,7 +138,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-neutral-200" />
               <DropdownMenuItem 
-                onClick={() => router.push('/dashboard/settings/profile')}
+                onClick={() => router.push('/dashboard/settings?tab=profile')}
                 className="text-neutral-600 hover:bg-neutral-100 hover:text-black"
               >
                 <User className="mr-2 h-4 w-4 text-neutral-400" />

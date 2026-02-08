@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   User, Building, Shield, Users, Mail, Save, Loader2, CheckCircle,
   Plus, Trash2, Send, Eye, EyeOff,
@@ -55,6 +56,8 @@ const settingsTabs = [
 ];
 
 export default function SettingsPage() {
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get('tab') || 'profile';
   const { currentWorkspace, setCurrentWorkspace, setWorkspaces } = useWorkspaceStore();
 
   // Profile
@@ -220,7 +223,7 @@ export default function SettingsPage() {
         <p className="text-slate-500 mt-1">Manage your account and workspace settings</p>
       </div>
 
-      <Tabs defaultValue="profile" className="space-y-6">
+      <Tabs defaultValue={initialTab} className="space-y-6">
         <TabsList className="bg-white border border-slate-200 flex-wrap h-auto p-1">
           {settingsTabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value} className="gap-2 data-[state=active]:bg-slate-100 data-[state=active]:text-slate-900">
