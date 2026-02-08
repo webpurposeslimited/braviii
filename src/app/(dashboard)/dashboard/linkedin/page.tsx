@@ -20,57 +20,20 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
+// TODO: Wire to real API
 const taskStats = [
-  { label: 'Pending', value: 12, icon: Clock, color: 'text-amber-400' },
-  { label: 'Completed Today', value: 8, icon: CheckCircle, color: 'text-blue-400' },
-  { label: 'Connection Requests', value: 5, icon: UserPlus, color: 'text-blue-400' },
-  { label: 'Messages to Send', value: 7, icon: MessageSquare, color: 'text-purple-400' },
+  { label: 'Pending', value: 0, icon: Clock, color: 'text-amber-600' },
+  { label: 'Completed Today', value: 0, icon: CheckCircle, color: 'text-emerald-600' },
+  { label: 'Connection Requests', value: 0, icon: UserPlus, color: 'text-blue-600' },
+  { label: 'Messages to Send', value: 0, icon: MessageSquare, color: 'text-purple-600' },
 ];
 
-const pendingTasks = [
-  {
-    id: '1',
-    type: 'connection',
-    lead: { name: 'Sarah Johnson', title: 'VP of Sales', company: 'TechCorp', avatar: '' },
-    linkedinUrl: 'https://linkedin.com/in/sarahjohnson',
-    sequence: 'Q4 Enterprise Outreach',
-    dueDate: 'Today',
-    priority: 'high',
-  },
-  {
-    id: '2',
-    type: 'message',
-    lead: { name: 'Michael Chen', title: 'CTO', company: 'StartupXYZ', avatar: '' },
-    linkedinUrl: 'https://linkedin.com/in/michaelchen',
-    sequence: 'Product Launch',
-    message: 'Hi Michael, I noticed your recent post about...',
-    dueDate: 'Today',
-    priority: 'high',
-  },
-  {
-    id: '3',
-    type: 'view',
-    lead: { name: 'Emily Davis', title: 'Head of Marketing', company: 'GrowthCo', avatar: '' },
-    linkedinUrl: 'https://linkedin.com/in/emilydavis',
-    sequence: 'Warm Leads Follow-up',
-    dueDate: 'Tomorrow',
-    priority: 'medium',
-  },
-  {
-    id: '4',
-    type: 'connection',
-    lead: { name: 'James Wilson', title: 'Director of Operations', company: 'Enterprise Inc', avatar: '' },
-    linkedinUrl: 'https://linkedin.com/in/jameswilson',
-    sequence: 'Q4 Enterprise Outreach',
-    dueDate: 'Tomorrow',
-    priority: 'medium',
-  },
-];
+const pendingTasks: any[] = [];
 
 const taskTypeConfig = {
-  connection: { icon: UserPlus, label: 'Send Connection', color: 'bg-blue-500/20 text-blue-400' },
-  message: { icon: MessageSquare, label: 'Send Message', color: 'bg-purple-500/20 text-purple-400' },
-  view: { icon: Eye, label: 'View Profile', color: 'bg-blue-500/20 text-blue-400' },
+  connection: { icon: UserPlus, label: 'Send Connection', color: 'bg-blue-50 text-blue-700' },
+  message: { icon: MessageSquare, label: 'Send Message', color: 'bg-purple-50 text-purple-700' },
+  view: { icon: Eye, label: 'View Profile', color: 'bg-slate-100 text-slate-700' },
 };
 
 export default function LinkedInTasksPage() {
@@ -83,14 +46,14 @@ export default function LinkedInTasksPage() {
   const activeTasks = pendingTasks.filter(t => !completedTasks.includes(t.id));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <Linkedin className="h-8 w-8 text-[#0A66C2]" />
+          <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-3">
+            <Linkedin className="h-7 w-7 text-[#0A66C2]" />
             LinkedIn Tasks
           </h1>
-          <p className="text-white/60 mt-1">Manual LinkedIn actions for your sequences</p>
+          <p className="text-slate-500 mt-1">Manual LinkedIn actions for your sequences</p>
         </div>
       </div>
 
@@ -102,15 +65,15 @@ export default function LinkedInTasksPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card glass>
+            <Card className="bg-white border-slate-200">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg bg-white/5 ${stat.color}`}>
+                  <div className={`p-2 rounded-lg bg-slate-50 ${stat.color}`}>
                     <stat.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-white">{stat.value}</p>
-                    <p className="text-sm text-white/60">{stat.label}</p>
+                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                    <p className="text-sm text-slate-500">{stat.label}</p>
                   </div>
                 </div>
               </CardContent>
@@ -121,14 +84,14 @@ export default function LinkedInTasksPage() {
 
       <Tabs defaultValue="pending" className="space-y-4">
         <div className="flex items-center justify-between">
-          <TabsList className="bg-white/5">
+          <TabsList className="bg-white border border-slate-200">
             <TabsTrigger value="pending">Pending ({activeTasks.length})</TabsTrigger>
             <TabsTrigger value="completed">Completed ({completedTasks.length})</TabsTrigger>
           </TabsList>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-              <Input placeholder="Search tasks..." className="pl-10 w-64 bg-white/5 border-white/10" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input placeholder="Search tasks..." className="pl-10 w-64 bg-white border-slate-200" />
             </div>
             <Button variant="ghost" size="icon">
               <Filter className="h-4 w-4" />
@@ -147,19 +110,19 @@ export default function LinkedInTasksPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card glass>
+                <Card className="bg-white border-slate-200">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <Avatar className="h-12 w-12">
                           <AvatarImage src={task.lead.avatar} />
-                          <AvatarFallback className="bg-gradient-to-br from-primary to-accent-cyan text-white">
-                            {task.lead.name.split(' ').map(n => n[0]).join('')}
+                          <AvatarFallback className="bg-blue-600 text-white">
+                            {task.lead.name.split(' ').map((n: string) => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h3 className="font-medium text-white">{task.lead.name}</h3>
+                            <h3 className="font-medium text-slate-900">{task.lead.name}</h3>
                             <a
                               href={task.linkedinUrl}
                               target="_blank"
@@ -169,10 +132,10 @@ export default function LinkedInTasksPage() {
                               <ExternalLink className="h-4 w-4" />
                             </a>
                           </div>
-                          <p className="text-sm text-white/60">
+                          <p className="text-sm text-slate-500">
                             {task.lead.title} at {task.lead.company}
                           </p>
-                          <p className="text-xs text-white/40 mt-1">Sequence: {task.sequence}</p>
+                          <p className="text-xs text-slate-400 mt-1">Sequence: {task.sequence}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
@@ -181,12 +144,12 @@ export default function LinkedInTasksPage() {
                             <Icon className="h-3 w-3 mr-1" />
                             {config.label}
                           </Badge>
-                          <p className={`text-sm mt-1 ${task.priority === 'high' ? 'text-amber-400' : 'text-white/60'}`}>
+                          <p className={`text-sm mt-1 ${task.priority === 'high' ? 'text-amber-600' : 'text-slate-500'}`}>
                             {task.dueDate}
                           </p>
                         </div>
                         <Button
-                          variant="cyan"
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
                           size="sm"
                           onClick={() => handleComplete(task.id)}
                         >
@@ -196,8 +159,8 @@ export default function LinkedInTasksPage() {
                       </div>
                     </div>
                     {task.type === 'message' && 'message' in task && (
-                      <div className="mt-4 p-3 bg-white/5 rounded-lg">
-                        <p className="text-sm text-white/80">{task.message}</p>
+                      <div className="mt-4 p-3 bg-slate-50 rounded-lg">
+                        <p className="text-sm text-slate-700">{task.message}</p>
                       </div>
                     )}
                   </CardContent>
@@ -206,38 +169,38 @@ export default function LinkedInTasksPage() {
             );
           })}
           {activeTasks.length === 0 && (
-            <Card glass>
+            <Card className="bg-white border-slate-200">
               <CardContent className="p-12 text-center">
-                <CheckCircle className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-white mb-2">All caught up!</h3>
-                <p className="text-white/60">No pending LinkedIn tasks</p>
+                <CheckCircle className="h-12 w-12 text-emerald-500 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-slate-900 mb-2">All caught up!</h3>
+                <p className="text-slate-500">No pending LinkedIn tasks</p>
               </CardContent>
             </Card>
           )}
         </TabsContent>
 
         <TabsContent value="completed">
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardContent className="p-6">
               {completedTasks.length > 0 ? (
                 <div className="space-y-3">
                   {pendingTasks
                     .filter(t => completedTasks.includes(t.id))
                     .map(task => (
-                      <div key={task.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                      <div key={task.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                         <div className="flex items-center gap-3">
-                          <CheckCircle className="h-5 w-5 text-blue-400" />
-                          <span className="text-white">{task.lead.name}</span>
-                          <Badge variant="outline" className="text-white/60">
+                          <CheckCircle className="h-5 w-5 text-emerald-500" />
+                          <span className="text-slate-900">{task.lead.name}</span>
+                          <Badge variant="outline" className="text-slate-500">
                             {taskTypeConfig[task.type as keyof typeof taskTypeConfig].label}
                           </Badge>
                         </div>
-                        <span className="text-sm text-white/40">Just now</span>
+                        <span className="text-sm text-slate-400">Just now</span>
                       </div>
                     ))}
                 </div>
               ) : (
-                <p className="text-center text-white/60">No completed tasks yet</p>
+                <p className="text-center text-slate-500">No completed tasks yet</p>
               )}
             </CardContent>
           </Card>

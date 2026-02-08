@@ -37,36 +37,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+// TODO: Wire to real API endpoints
 const adminStats = {
-  totalWorkspaces: 156,
-  activeUsers: 423,
-  totalCreditsUsed: 245000,
-  activeJobs: 12,
-  failedJobs: 3,
-  pendingJobs: 8,
+  totalWorkspaces: 0,
+  activeUsers: 0,
+  totalCreditsUsed: 0,
+  activeJobs: 0,
+  failedJobs: 0,
+  pendingJobs: 0,
 };
 
-const recentWorkspaces = [
-  { id: '1', name: 'TechCorp Inc', slug: 'techcorp', users: 12, creditsUsed: 5400, plan: 'Professional', status: 'active', createdAt: '2024-01-15' },
-  { id: '2', name: 'StartupXYZ', slug: 'startupxyz', users: 5, creditsUsed: 1200, plan: 'Starter', status: 'active', createdAt: '2024-01-18' },
-  { id: '3', name: 'Enterprise Co', slug: 'enterprise', users: 45, creditsUsed: 28000, plan: 'Enterprise', status: 'active', createdAt: '2024-01-10' },
-  { id: '4', name: 'Demo Account', slug: 'demo', users: 1, creditsUsed: 50, plan: 'Free', status: 'suspended', createdAt: '2024-01-20' },
-  { id: '5', name: 'Growth Agency', slug: 'growth', users: 8, creditsUsed: 3200, plan: 'Professional', status: 'active', createdAt: '2024-01-12' },
-];
+const recentWorkspaces: any[] = [];
 
-const recentUsers = [
-  { id: '1', name: 'John Smith', email: 'john@techcorp.com', workspace: 'TechCorp Inc', role: 'Owner', lastActive: '5 min ago', status: 'online' },
-  { id: '2', name: 'Sarah Johnson', email: 'sarah@startupxyz.com', workspace: 'StartupXYZ', role: 'Admin', lastActive: '1 hour ago', status: 'offline' },
-  { id: '3', name: 'Mike Wilson', email: 'mike@enterprise.com', workspace: 'Enterprise Co', role: 'Member', lastActive: '2 hours ago', status: 'offline' },
-  { id: '4', name: 'Emily Davis', email: 'emily@growth.io', workspace: 'Growth Agency', role: 'Owner', lastActive: '30 min ago', status: 'online' },
-];
+const recentUsers: any[] = [];
 
-const backgroundJobs = [
-  { id: 'job_1', type: 'bulk_verification', workspace: 'TechCorp Inc', status: 'processing', progress: 65, total: 1000, processed: 650, createdAt: '10 min ago' },
-  { id: 'job_2', type: 'enrichment', workspace: 'Enterprise Co', status: 'completed', progress: 100, total: 500, processed: 500, createdAt: '1 hour ago' },
-  { id: 'job_3', type: 'bulk_verification', workspace: 'Growth Agency', status: 'failed', progress: 45, total: 200, processed: 90, error: 'Rate limit exceeded', createdAt: '2 hours ago' },
-  { id: 'job_4', type: 'email_sending', workspace: 'StartupXYZ', status: 'pending', progress: 0, total: 150, processed: 0, createdAt: '5 min ago' },
-];
+const backgroundJobs: any[] = [];
 
 const planColors: Record<string, string> = {
   Free: 'bg-slate-100 text-slate-700',

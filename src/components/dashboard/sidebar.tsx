@@ -36,14 +36,11 @@ const mainNavItems = [
   { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
 ];
 
-const bottomNavItems = [
-  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-  { name: 'Admin', href: '/admin', icon: Shield },
-  { name: 'Help', href: '/dashboard/help', icon: HelpCircle },
-];
+interface DashboardSidebarProps {
+  isSuperAdmin?: boolean;
+}
 
-export function DashboardSidebar() {
+export function DashboardSidebar({ isSuperAdmin }: DashboardSidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -93,7 +90,11 @@ export function DashboardSidebar() {
       </nav>
 
       <div className="border-t border-slate-200 py-4 px-3 space-y-0.5">
-        {bottomNavItems.map((item) => {
+        {[
+          { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
+          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+          ...(isSuperAdmin ? [{ name: 'Admin Panel', href: '/admin', icon: Shield }] : []),
+        ].map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link

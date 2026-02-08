@@ -41,88 +41,23 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const mockLeads = [
-  {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'john.smith@techcorp.com',
-    phone: '+1 (555) 123-4567',
-    jobTitle: 'VP of Sales',
-    company: 'TechCorp Inc.',
-    location: 'San Francisco, CA',
-    emailStatus: 'valid',
-    status: 'new',
-    tags: ['enterprise', 'hot-lead'],
-  },
-  {
-    id: '2',
-    firstName: 'Sarah',
-    lastName: 'Johnson',
-    email: 'sarah.j@innovate.io',
-    phone: '+1 (555) 234-5678',
-    jobTitle: 'Marketing Director',
-    company: 'Innovate.io',
-    location: 'New York, NY',
-    emailStatus: 'valid',
-    status: 'contacted',
-    tags: ['mid-market'],
-  },
-  {
-    id: '3',
-    firstName: 'Michael',
-    lastName: 'Chen',
-    email: 'mchen@globaltech.com',
-    phone: '+1 (555) 345-6789',
-    jobTitle: 'CTO',
-    company: 'GlobalTech',
-    location: 'Austin, TX',
-    emailStatus: 'risky',
-    status: 'engaged',
-    tags: ['enterprise', 'decision-maker'],
-  },
-  {
-    id: '4',
-    firstName: 'Emily',
-    lastName: 'Davis',
-    email: 'emily.davis@startup.co',
-    phone: '+1 (555) 456-7890',
-    jobTitle: 'Head of Growth',
-    company: 'StartupCo',
-    location: 'Seattle, WA',
-    emailStatus: 'valid',
-    status: 'qualified',
-    tags: ['startup', 'hot-lead'],
-  },
-  {
-    id: '5',
-    firstName: 'David',
-    lastName: 'Wilson',
-    email: 'dwilson@enterprise.net',
-    phone: '+1 (555) 567-8901',
-    jobTitle: 'Sales Manager',
-    company: 'Enterprise Net',
-    location: 'Chicago, IL',
-    emailStatus: 'invalid',
-    status: 'new',
-    tags: ['enterprise'],
-  },
-];
+// TODO: Wire to real API endpoint (e.g. /api/workspaces/[id]/leads)
+const mockLeads: any[] = [];
 
 const statusColors = {
-  new: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  contacted: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  engaged: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  qualified: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  converted: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-  unqualified: 'bg-red-500/20 text-red-400 border-red-500/30',
+  new: 'bg-blue-50 text-blue-700 border-blue-200',
+  contacted: 'bg-purple-50 text-purple-700 border-purple-200',
+  engaged: 'bg-amber-50 text-amber-700 border-amber-200',
+  qualified: 'bg-blue-50 text-blue-700 border-blue-200',
+  converted: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  unqualified: 'bg-red-50 text-red-700 border-red-200',
 };
 
 const emailStatusIcons = {
-  valid: <CheckCircle className="h-4 w-4 text-blue-400" />,
-  invalid: <XCircle className="h-4 w-4 text-red-400" />,
-  risky: <AlertCircle className="h-4 w-4 text-amber-400" />,
-  pending: <AlertCircle className="h-4 w-4 text-white/40" />,
+  valid: <CheckCircle className="h-4 w-4 text-emerald-600" />,
+  invalid: <XCircle className="h-4 w-4 text-red-500" />,
+  risky: <AlertCircle className="h-4 w-4 text-amber-500" />,
+  pending: <AlertCircle className="h-4 w-4 text-slate-400" />,
 };
 
 export default function LeadsPage() {
@@ -146,22 +81,22 @@ export default function LeadsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Leads</h1>
-          <p className="text-white/60 mt-1">Manage and organize your leads</p>
+          <h1 className="text-2xl font-semibold text-slate-900">Leads</h1>
+          <p className="text-slate-500 mt-1">Manage and organize your leads</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="glass">
+          <Button variant="outline">
             <Upload className="mr-2 h-4 w-4" />
             Import
           </Button>
-          <Button variant="glass">
+          <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
-          <Button variant="cyan">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
             <Plus className="mr-2 h-4 w-4" />
             Add Lead
           </Button>
@@ -170,7 +105,7 @@ export default function LeadsPage() {
 
       <Tabs defaultValue="all" className="space-y-4">
         <div className="flex items-center justify-between">
-          <TabsList className="bg-white/5">
+          <TabsList className="bg-white border border-slate-200">
             <TabsTrigger value="all">All Leads</TabsTrigger>
             <TabsTrigger value="new">New</TabsTrigger>
             <TabsTrigger value="contacted">Contacted</TabsTrigger>
@@ -179,16 +114,16 @@ export default function LeadsPage() {
 
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
                 placeholder="Search leads..."
-                className="pl-10 w-64 bg-white/5 border-white/10"
+                className="pl-10 w-64 bg-white border-slate-200"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <Select defaultValue="all">
-              <SelectTrigger className="w-40 bg-white/5 border-white/10">
+              <SelectTrigger className="w-40 bg-white border-slate-200">
                 <SelectValue placeholder="Filter by list" />
               </SelectTrigger>
               <SelectContent>
@@ -209,9 +144,9 @@ export default function LeadsPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-3 p-3 rounded-xl bg-primary/10 border border-primary/20"
+              className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-200"
             >
-              <span className="text-sm text-white">
+              <span className="text-sm text-slate-700">
                 {selectedLeads.length} lead{selectedLeads.length > 1 ? 's' : ''} selected
               </span>
               <div className="flex gap-2 ml-auto">
@@ -226,26 +161,26 @@ export default function LeadsPage() {
             </motion.div>
           )}
 
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
+                    <tr className="border-b border-slate-200">
                       <th className="p-4 text-left">
                         <input
                           type="checkbox"
-                          className="rounded border-white/20 bg-white/5"
+                          className="rounded border-slate-300"
                           checked={selectedLeads.length === mockLeads.length}
                           onChange={toggleAllLeads}
                         />
                       </th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Name</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Contact</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Company</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Status</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Tags</th>
-                      <th className="p-4 text-right text-sm font-medium text-white/60">Actions</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Name</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Contact</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Company</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Status</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Tags</th>
+                      <th className="p-4 text-right text-sm font-medium text-slate-500">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -254,12 +189,12 @@ export default function LeadsPage() {
                         key={lead.id}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                        className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
                       >
                         <td className="p-4">
                           <input
                             type="checkbox"
-                            className="rounded border-white/20 bg-white/5"
+                            className="rounded border-slate-300"
                             checked={selectedLeads.includes(lead.id)}
                             onChange={() => toggleLeadSelection(lead.id)}
                           />
@@ -267,15 +202,15 @@ export default function LeadsPage() {
                         <td className="p-4">
                           <div className="flex items-center gap-3">
                             <Avatar className="h-10 w-10">
-                              <AvatarFallback className="bg-gradient-to-br from-primary to-accent-cyan text-white">
+                              <AvatarFallback className="bg-blue-600 text-white">
                                 {lead.firstName[0]}{lead.lastName[0]}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="font-medium text-white">
+                              <p className="font-medium text-slate-900">
                                 {lead.firstName} {lead.lastName}
                               </p>
-                              <p className="text-sm text-white/60">{lead.jobTitle}</p>
+                              <p className="text-sm text-slate-500">{lead.jobTitle}</p>
                             </div>
                           </div>
                         </td>
@@ -283,9 +218,9 @@ export default function LeadsPage() {
                           <div className="space-y-1">
                             <div className="flex items-center gap-2 text-sm">
                               {emailStatusIcons[lead.emailStatus as keyof typeof emailStatusIcons]}
-                              <span className="text-white/80">{lead.email}</span>
+                              <span className="text-slate-700">{lead.email}</span>
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-white/60">
+                            <div className="flex items-center gap-2 text-sm text-slate-500">
                               <Phone className="h-3 w-3" />
                               {lead.phone}
                             </div>
@@ -293,11 +228,11 @@ export default function LeadsPage() {
                         </td>
                         <td className="p-4">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-2 text-sm text-white/80">
+                            <div className="flex items-center gap-2 text-sm text-slate-700">
                               <Building className="h-3 w-3" />
                               {lead.company}
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-white/60">
+                            <div className="flex items-center gap-2 text-sm text-slate-500">
                               <MapPin className="h-3 w-3" />
                               {lead.location}
                             </div>

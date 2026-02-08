@@ -14,27 +14,22 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 
+// TODO: Wire to real billing API
 const currentPlan = {
-  name: 'Professional',
-  price: 149,
+  name: 'No Plan',
+  price: 0,
   period: 'month',
-  renewsAt: 'Feb 15, 2024',
+  renewsAt: '--',
 };
 
 const usageStats = {
-  leads: { used: 4500, limit: 10000 },
-  verifications: { used: 2450, limit: 5000 },
-  sequences: { used: 8, limit: -1 },
-  sendingAccounts: { used: 3, limit: 5 },
+  leads: { used: 0, limit: 0 },
+  verifications: { used: 0, limit: 0 },
+  sequences: { used: 0, limit: 0 },
+  sendingAccounts: { used: 0, limit: 0 },
 };
 
-const creditHistory = [
-  { date: 'Jan 20, 2024', type: 'usage', description: 'Email verification (250 emails)', amount: -250, balance: 2750 },
-  { date: 'Jan 18, 2024', type: 'usage', description: 'Lead enrichment (45 leads)', amount: -135, balance: 3000 },
-  { date: 'Jan 15, 2024', type: 'purchase', description: 'Monthly credits reset', amount: 5000, balance: 3135 },
-  { date: 'Jan 12, 2024', type: 'usage', description: 'AI opener generation', amount: -50, balance: -1865 },
-  { date: 'Jan 10, 2024', type: 'bonus', description: 'Referral bonus', amount: 500, balance: -1815 },
-];
+const creditHistory: any[] = [];
 
 const plans = [
   {
@@ -60,13 +55,13 @@ const plans = [
 
 export default function BillingPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Billing</h1>
-          <p className="text-white/60 mt-1">Manage your subscription and credits</p>
+          <h1 className="text-2xl font-semibold text-slate-900">Billing</h1>
+          <p className="text-slate-500 mt-1">Manage your subscription and credits</p>
         </div>
-        <Button variant="glass">
+        <Button variant="outline">
           <Download className="mr-2 h-4 w-4" />
           Download Invoices
         </Button>
@@ -78,27 +73,27 @@ export default function BillingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-2"
         >
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-slate-900 flex items-center gap-2">
                     Current Plan
-                    <Badge className="bg-accent-cyan/20 text-accent-cyan border-accent-cyan/30">
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                       {currentPlan.name}
                     </Badge>
                   </CardTitle>
                   <CardDescription>Your subscription details</CardDescription>
                 </div>
-                <Button variant="cyan">Manage Subscription</Button>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">Manage Subscription</Button>
               </div>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-4xl font-bold text-white">${currentPlan.price}</span>
-                <span className="text-white/60">/{currentPlan.period}</span>
+                <span className="text-4xl font-bold text-slate-900">${currentPlan.price}</span>
+                <span className="text-slate-500">/{currentPlan.period}</span>
               </div>
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-slate-500">
                 Your plan renews on {currentPlan.renewsAt}
               </p>
             </CardContent>
@@ -110,17 +105,17 @@ export default function BillingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Zap className="h-5 w-5 text-accent-cyan" />
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <Zap className="h-5 w-5 text-blue-600" />
                 Credits Balance
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-4xl font-bold text-white mb-2">2,450</p>
-              <p className="text-sm text-white/60 mb-4">credits remaining</p>
-              <Button variant="glass" className="w-full">
+              <p className="text-4xl font-bold text-slate-900 mb-2">--</p>
+              <p className="text-sm text-slate-500 mb-4">credits remaining</p>
+              <Button variant="outline" className="w-full">
                 <Plus className="mr-2 h-4 w-4" />
                 Buy More Credits
               </Button>
@@ -134,36 +129,36 @@ export default function BillingPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Usage This Month</CardTitle>
+            <CardTitle className="text-slate-900">Usage This Month</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Leads</span>
-                <span className="text-white">{usageStats.leads.used.toLocaleString()} / {usageStats.leads.limit.toLocaleString()}</span>
+                <span className="text-slate-500">Leads</span>
+                <span className="text-slate-900">{usageStats.leads.used.toLocaleString()} / {usageStats.leads.limit.toLocaleString()}</span>
               </div>
               <Progress value={(usageStats.leads.used / usageStats.leads.limit) * 100} className="h-2" />
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Email Verifications</span>
-                <span className="text-white">{usageStats.verifications.used.toLocaleString()} / {usageStats.verifications.limit.toLocaleString()}</span>
+                <span className="text-slate-500">Email Verifications</span>
+                <span className="text-slate-900">{usageStats.verifications.used.toLocaleString()} / {usageStats.verifications.limit.toLocaleString()}</span>
               </div>
               <Progress value={(usageStats.verifications.used / usageStats.verifications.limit) * 100} className="h-2" />
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Active Sequences</span>
-                <span className="text-white">{usageStats.sequences.used} / Unlimited</span>
+                <span className="text-slate-500">Active Sequences</span>
+                <span className="text-slate-900">{usageStats.sequences.used} / Unlimited</span>
               </div>
               <Progress value={20} className="h-2" />
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Sending Accounts</span>
-                <span className="text-white">{usageStats.sendingAccounts.used} / {usageStats.sendingAccounts.limit}</span>
+                <span className="text-slate-500">Sending Accounts</span>
+                <span className="text-slate-900">{usageStats.sendingAccounts.used} / {usageStats.sendingAccounts.limit}</span>
               </div>
               <Progress value={(usageStats.sendingAccounts.used / usageStats.sendingAccounts.limit) * 100} className="h-2" />
             </div>
@@ -176,9 +171,9 @@ export default function BillingPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Available Plans</CardTitle>
+            <CardTitle className="text-slate-900">Available Plans</CardTitle>
             <CardDescription>Choose the plan that fits your needs</CardDescription>
           </CardHeader>
           <CardContent>
@@ -188,31 +183,31 @@ export default function BillingPage() {
                   key={plan.name}
                   className={`relative p-6 rounded-xl border ${
                     plan.current
-                      ? 'border-accent-cyan bg-accent-cyan/5'
-                      : 'border-white/10 bg-white/5'
+                      ? 'border-blue-300 bg-blue-50'
+                      : 'border-slate-200 bg-white'
                   }`}
                 >
                   {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-cyan text-white">
+                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white">
                       Current Plan
                     </Badge>
                   )}
-                  <h3 className="text-lg font-semibold text-white mb-2">{plan.name}</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{plan.name}</h3>
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-3xl font-bold text-white">${plan.price}</span>
-                    <span className="text-white/60">/mo</span>
+                    <span className="text-3xl font-bold text-slate-900">${plan.price}</span>
+                    <span className="text-slate-500">/mo</span>
                   </div>
                   <ul className="space-y-2 mb-6">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-white/80">
-                        <Check className="h-4 w-4 text-accent-cyan" />
+                      <li key={feature} className="flex items-center gap-2 text-sm text-slate-700">
+                        <Check className="h-4 w-4 text-blue-600" />
                         {feature}
                       </li>
                     ))}
                   </ul>
                   <Button
-                    variant={plan.current ? 'glass' : 'cyan'}
-                    className="w-full"
+                    variant={plan.current ? 'outline' : 'default'}
+                    className={`w-full ${!plan.current ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''}`}
                     disabled={plan.current}
                   >
                     {plan.current ? 'Current Plan' : 'Upgrade'}
@@ -229,30 +224,30 @@ export default function BillingPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Credit History</CardTitle>
+            <CardTitle className="text-slate-900">Credit History</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="p-4 text-left text-sm font-medium text-white/60">Date</th>
-                    <th className="p-4 text-left text-sm font-medium text-white/60">Description</th>
-                    <th className="p-4 text-right text-sm font-medium text-white/60">Amount</th>
-                    <th className="p-4 text-right text-sm font-medium text-white/60">Balance</th>
+                  <tr className="border-b border-slate-200">
+                    <th className="p-4 text-left text-sm font-medium text-slate-500">Date</th>
+                    <th className="p-4 text-left text-sm font-medium text-slate-500">Description</th>
+                    <th className="p-4 text-right text-sm font-medium text-slate-500">Amount</th>
+                    <th className="p-4 text-right text-sm font-medium text-slate-500">Balance</th>
                   </tr>
                 </thead>
                 <tbody>
                   {creditHistory.map((item, index) => (
-                    <tr key={index} className="border-b border-white/5 hover:bg-white/5">
-                      <td className="p-4 text-sm text-white/60">{item.date}</td>
-                      <td className="p-4 text-sm text-white">{item.description}</td>
-                      <td className={`p-4 text-sm text-right ${item.amount > 0 ? 'text-blue-400' : 'text-white/80'}`}>
+                    <tr key={index} className="border-b border-slate-100 hover:bg-slate-50">
+                      <td className="p-4 text-sm text-slate-500">{item.date}</td>
+                      <td className="p-4 text-sm text-slate-900">{item.description}</td>
+                      <td className={`p-4 text-sm text-right ${item.amount > 0 ? 'text-emerald-600' : 'text-slate-700'}`}>
                         {item.amount > 0 ? '+' : ''}{item.amount.toLocaleString()}
                       </td>
-                      <td className="p-4 text-sm text-white text-right">{item.balance.toLocaleString()}</td>
+                      <td className="p-4 text-sm text-slate-900 text-right">{item.balance.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -25,11 +25,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 
+// TODO: Wire to real API
 const enrichmentStats = {
-  totalEnriched: 8450,
-  thisMonth: 1234,
-  successRate: 87.5,
-  creditsUsed: 3702,
+  totalEnriched: 0,
+  thisMonth: 0,
+  successRate: 0,
+  creditsUsed: 0,
 };
 
 const enrichmentFields = [
@@ -41,13 +42,7 @@ const enrichmentFields = [
   { id: 'employees', label: 'Employee Count', icon: Users, credits: 1, enabled: false },
 ];
 
-const recentEnrichments = [
-  { lead: 'John Smith', company: 'TechCorp', fieldsFound: 4, totalFields: 5, status: 'complete' },
-  { lead: 'Sarah Johnson', company: 'StartupXYZ', fieldsFound: 5, totalFields: 5, status: 'complete' },
-  { lead: 'Michael Chen', company: 'Enterprise Inc', fieldsFound: 3, totalFields: 5, status: 'complete' },
-  { lead: 'Emily Davis', company: 'GrowthCo', fieldsFound: 2, totalFields: 5, status: 'partial' },
-  { lead: 'James Wilson', company: 'InnovateTech', fieldsFound: 5, totalFields: 5, status: 'complete' },
-];
+const recentEnrichments: any[] = [];
 
 export default function EnrichmentPage() {
   const [singleSearch, setSingleSearch] = useState('');
@@ -68,50 +63,50 @@ export default function EnrichmentPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-            <Sparkles className="h-8 w-8 text-accent-cyan" />
+          <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-3">
+            <Sparkles className="h-7 w-7 text-blue-600" />
             Lead Enrichment
           </h1>
-          <p className="text-white/60 mt-1">Enrich your leads with verified contact data</p>
+          <p className="text-slate-500 mt-1">Enrich your leads with verified contact data</p>
         </div>
-        <Button variant="cyan">
+        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
           <Upload className="mr-2 h-4 w-4" />
           Bulk Enrich
         </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-white">{enrichmentStats.totalEnriched.toLocaleString()}</p>
-            <p className="text-sm text-white/60">Total Enriched</p>
+            <p className="text-3xl font-bold text-slate-900">{enrichmentStats.totalEnriched.toLocaleString()}</p>
+            <p className="text-sm text-slate-500">Total Enriched</p>
           </CardContent>
         </Card>
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-accent-cyan">{enrichmentStats.thisMonth.toLocaleString()}</p>
-            <p className="text-sm text-white/60">This Month</p>
+            <p className="text-3xl font-bold text-blue-600">{enrichmentStats.thisMonth.toLocaleString()}</p>
+            <p className="text-sm text-slate-500">This Month</p>
           </CardContent>
         </Card>
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-blue-400">{enrichmentStats.successRate}%</p>
-            <p className="text-sm text-white/60">Success Rate</p>
+            <p className="text-3xl font-bold text-emerald-600">{enrichmentStats.successRate}%</p>
+            <p className="text-sm text-slate-500">Success Rate</p>
           </CardContent>
         </Card>
-        <Card glass>
+        <Card className="bg-white border-slate-200">
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-amber-400">{enrichmentStats.creditsUsed.toLocaleString()}</p>
-            <p className="text-sm text-white/60">Credits Used</p>
+            <p className="text-3xl font-bold text-amber-600">{enrichmentStats.creditsUsed.toLocaleString()}</p>
+            <p className="text-sm text-slate-500">Credits Used</p>
           </CardContent>
         </Card>
       </div>
 
       <Tabs defaultValue="single" className="space-y-4">
-        <TabsList className="bg-white/5">
+        <TabsList className="bg-white border border-slate-200">
           <TabsTrigger value="single">Single Enrichment</TabsTrigger>
           <TabsTrigger value="bulk">Bulk Enrichment</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
@@ -119,24 +114,24 @@ export default function EnrichmentPage() {
 
         <TabsContent value="single">
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card glass>
+            <Card className="bg-white border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white">Enrich a Lead</CardTitle>
+                <CardTitle className="text-slate-900">Enrich a Lead</CardTitle>
                 <CardDescription>Enter email or LinkedIn URL to enrich</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-3">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
                       placeholder="Enter email or LinkedIn URL..."
                       value={singleSearch}
                       onChange={(e) => setSingleSearch(e.target.value)}
-                      className="pl-10 bg-white/5 border-white/10"
+                      className="pl-10 bg-white border-slate-200"
                     />
                   </div>
                   <Button
-                    variant="cyan"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={handleEnrich}
                     disabled={!singleSearch || isEnriching}
                   >
@@ -150,15 +145,15 @@ export default function EnrichmentPage() {
                     )}
                   </Button>
                 </div>
-                <p className="text-sm text-white/40">
+                <p className="text-sm text-slate-400">
                   Estimated cost: {totalCredits} credits per lead
                 </p>
               </CardContent>
             </Card>
 
-            <Card glass>
+            <Card className="bg-white border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white">Enrichment Fields</CardTitle>
+                <CardTitle className="text-slate-900">Enrichment Fields</CardTitle>
                 <CardDescription>Select which data to enrich</CardDescription>
               </CardHeader>
               <CardContent>
@@ -168,8 +163,8 @@ export default function EnrichmentPage() {
                     return (
                       <div key={field.id} className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <Icon className="h-4 w-4 text-white/60" />
-                          <Label className="text-white">{field.label}</Label>
+                          <Icon className="h-4 w-4 text-slate-500" />
+                          <Label className="text-slate-700">{field.label}</Label>
                           {field.credits > 0 && (
                             <Badge variant="outline" className="text-xs">
                               {field.credits} credit{field.credits > 1 ? 's' : ''}
@@ -190,26 +185,26 @@ export default function EnrichmentPage() {
         </TabsContent>
 
         <TabsContent value="bulk">
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white">Bulk Enrichment</CardTitle>
+              <CardTitle className="text-slate-900">Bulk Enrichment</CardTitle>
               <CardDescription>Enrich multiple leads at once</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-dashed border-white/20 rounded-xl p-12 text-center">
-                <Upload className="h-12 w-12 text-white/40 mx-auto mb-4" />
-                <p className="text-white mb-2">Upload a CSV file with leads to enrich</p>
-                <p className="text-sm text-white/40 mb-4">Required: Email or LinkedIn URL column</p>
-                <Button variant="glass">Select File</Button>
+              <div className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center">
+                <Upload className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-700 mb-2">Upload a CSV file with leads to enrich</p>
+                <p className="text-sm text-slate-400 mb-4">Required: Email or LinkedIn URL column</p>
+                <Button variant="outline">Select File</Button>
               </div>
-              <div className="mt-6 p-4 bg-white/5 rounded-lg">
-                <h4 className="font-medium text-white mb-2">Or enrich from your leads</h4>
+              <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+                <h4 className="font-medium text-slate-900 mb-2">Or enrich from your leads</h4>
                 <div className="flex items-center gap-3">
-                  <Button variant="glass" className="flex-1">
+                  <Button variant="outline" className="flex-1">
                     <Play className="mr-2 h-4 w-4" />
                     Enrich All Unenriched Leads
                   </Button>
-                  <Button variant="glass" className="flex-1">
+                  <Button variant="outline" className="flex-1">
                     Enrich Selected List
                   </Button>
                 </div>
@@ -219,19 +214,19 @@ export default function EnrichmentPage() {
         </TabsContent>
 
         <TabsContent value="history">
-          <Card glass>
+          <Card className="bg-white border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white">Recent Enrichments</CardTitle>
+              <CardTitle className="text-slate-900">Recent Enrichments</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Lead</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Company</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Fields Found</th>
-                      <th className="p-4 text-left text-sm font-medium text-white/60">Status</th>
+                    <tr className="border-b border-slate-200">
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Lead</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Company</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Fields Found</th>
+                      <th className="p-4 text-left text-sm font-medium text-slate-500">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -241,29 +236,29 @@ export default function EnrichmentPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * 0.05 }}
-                        className="border-b border-white/5 hover:bg-white/5"
+                        className="border-b border-slate-100 hover:bg-slate-50"
                       >
-                        <td className="p-4 text-sm text-white">{item.lead}</td>
-                        <td className="p-4 text-sm text-white/80">{item.company}</td>
+                        <td className="p-4 text-sm text-slate-900">{item.lead}</td>
+                        <td className="p-4 text-sm text-slate-700">{item.company}</td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             <Progress
                               value={(item.fieldsFound / item.totalFields) * 100}
                               className="h-2 w-20"
                             />
-                            <span className="text-sm text-white/60">
+                            <span className="text-sm text-slate-500">
                               {item.fieldsFound}/{item.totalFields}
                             </span>
                           </div>
                         </td>
                         <td className="p-4">
                           {item.status === 'complete' ? (
-                            <Badge className="bg-blue-500/20 text-blue-400">
+                            <Badge className="bg-emerald-50 text-emerald-700">
                               <CheckCircle className="h-3 w-3 mr-1" />
                               Complete
                             </Badge>
                           ) : (
-                            <Badge className="bg-amber-500/20 text-amber-400">
+                            <Badge className="bg-amber-50 text-amber-700">
                               Partial
                             </Badge>
                           )}
