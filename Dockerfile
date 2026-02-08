@@ -32,7 +32,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production image
-FROM base AS runner
+FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -43,10 +43,12 @@ RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+RUN mkdir -p .next uploads
+RUN chown -R nextjs:nodejs .next uploads
 
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

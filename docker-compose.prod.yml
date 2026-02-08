@@ -10,14 +10,18 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    volumes:
+      - uploads_data:/app/uploads
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
       - NEXTAUTH_URL=${NEXTAUTH_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
       - REDIS_URL=${REDIS_URL}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
@@ -27,6 +31,16 @@ services:
       - S3_SECRET_KEY=${S3_SECRET_KEY}
       - S3_BUCKET=${S3_BUCKET}
       - S3_REGION=${S3_REGION}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME}
+      - ENABLE_LINKEDIN_AUTOMATION=${ENABLE_LINKEDIN_AUTOMATION}
+      - MAX_UPLOAD_SIZE_MB=${MAX_UPLOAD_SIZE_MB}
     depends_on:
       postgres:
         condition: service_healthy
@@ -48,12 +62,19 @@ services:
       target: production
     container_name: bravilio-worker
     restart: unless-stopped
-    command: ["node", "dist/workers/index.js"]
+    command: ["node", "server.js"]
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=${REDIS_URL}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+      - APOLLO_API_KEY=${APOLLO_API_KEY}
+      - WORKER_MODE=true
     depends_on:
       postgres:
         condition: service_healthy
@@ -110,7 +131,6 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - certbot_data:/var/www/certbot:ro
       - certbot_certs:/etc/letsencrypt:ro
     depends_on:
@@ -129,6 +149,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  uploads_data:
   certbot_data:
   certbot_certs:
 
