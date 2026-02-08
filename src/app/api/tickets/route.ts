@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
   if (priority) where.priority = priority;
 
   const [tickets, total] = await Promise.all([
-    prisma.ticket.findMany({
+    (prisma as any).ticket.findMany({
       where,
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * limit,
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
         _count: { select: { messages: true } },
       },
     }),
-    prisma.ticket.count({ where }),
+    (prisma as any).ticket.count({ where }),
   ]);
 
   return paginatedResponse(tickets, page, limit, total);
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data = createTicketSchema.parse(body);
 
-    const ticket = await prisma.ticket.create({
+    const ticket = await (prisma as any).ticket.create({
       data: {
         subject: data.subject,
         category: data.category,

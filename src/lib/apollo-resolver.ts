@@ -19,7 +19,7 @@ export async function resolveApolloCredential(
   workspaceId?: string
 ): Promise<ResolvedApolloCredential | null> {
   // 1. Check user-level credential
-  const userCred = await prisma.apolloCredential.findFirst({
+  const userCred = await (prisma as any).apolloCredential.findFirst({
     where: { ownerType: 'USER', ownerId: userId },
     orderBy: { createdAt: 'desc' },
   });
@@ -34,7 +34,7 @@ export async function resolveApolloCredential(
 
   // 2. Check tenant/workspace-level default
   if (workspaceId) {
-    const tenantCred = await prisma.apolloCredential.findFirst({
+    const tenantCred = await (prisma as any).apolloCredential.findFirst({
       where: { ownerType: 'TENANT', ownerId: workspaceId, isDefault: true },
     });
 
@@ -48,7 +48,7 @@ export async function resolveApolloCredential(
   }
 
   // 3. Check system-level default
-  const systemCred = await prisma.apolloCredential.findFirst({
+  const systemCred = await (prisma as any).apolloCredential.findFirst({
     where: { ownerType: 'SYSTEM', isDefault: true },
   });
 

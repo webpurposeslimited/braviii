@@ -40,7 +40,7 @@ export const PERMISSIONS = {
 export type PermissionCode = keyof typeof PERMISSIONS;
 
 export async function getUserPermissions(userId: string): Promise<string[]> {
-  const user = await prisma.user.findUnique({
+  const user = await (prisma.user.findUnique as any)({
     where: { id: userId },
     select: {
       isSuperAdmin: true,
@@ -107,7 +107,7 @@ export async function hasAnyPermission(
 }
 
 export async function isAdminUser(userId: string): Promise<boolean> {
-  const user = await prisma.user.findUnique({
+  const user = await (prisma.user.findUnique as any)({
     where: { id: userId },
     select: {
       isSuperAdmin: true,
@@ -116,5 +116,5 @@ export async function isAdminUser(userId: string): Promise<boolean> {
   });
 
   if (!user) return false;
-  return user.isSuperAdmin || user.adminRoles.length > 0;
+  return user.isSuperAdmin || (user.adminRoles?.length ?? 0) > 0;
 }

@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
   }
 
   const [users, total] = await Promise.all([
-    prisma.user.findMany({
+    (prisma.user.findMany as any)({
       where: where as any,
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * limit,
