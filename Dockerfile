@@ -28,6 +28,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV AUTH_SECRET="build-time-placeholder-replaced-at-runtime"
+ENV NEXTAUTH_URL="http://localhost:3000"
 
 RUN mkdir -p public
 RUN npx prisma generate
