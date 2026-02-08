@@ -76,14 +76,14 @@ const planColors: Record<string, string> = {
 };
 
 const statusColors: Record<string, string> = {
-  active: 'bg-emerald-100 text-emerald-700',
+  active: 'bg-blue-100 text-blue-700',
   suspended: 'bg-red-100 text-red-700',
   pending: 'bg-amber-100 text-amber-700',
 };
 
 const jobStatusColors: Record<string, { bg: string; text: string; icon: any }> = {
   processing: { bg: 'bg-blue-100', text: 'text-blue-700', icon: RefreshCw },
-  completed: { bg: 'bg-emerald-100', text: 'text-emerald-700', icon: CheckCircle },
+  completed: { bg: 'bg-blue-100', text: 'text-blue-700', icon: CheckCircle },
   failed: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle },
   pending: { bg: 'bg-amber-100', text: 'text-amber-700', icon: Clock },
 };
@@ -133,8 +133,8 @@ export default function AdminPage() {
           <Card className="bg-white border-slate-200 shadow-sm">
             <CardContent className="p-5">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-emerald-50">
-                  <Users className="h-5 w-5 text-emerald-600" />
+                <div className="p-2.5 rounded-xl bg-blue-50">
+                  <Users className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-semibold text-slate-900">{adminStats.activeUsers}</p>
@@ -397,7 +397,7 @@ export default function AdminPage() {
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <span className={`h-2 w-2 rounded-full ${user.status === 'online' ? 'bg-emerald-500' : 'bg-slate-300'}`} />
+                            <span className={`h-2 w-2 rounded-full ${user.status === 'online' ? 'bg-blue-500' : 'bg-slate-300'}`} />
                             <span className="text-sm text-slate-600 capitalize">{user.status}</span>
                           </div>
                         </td>
@@ -501,7 +501,7 @@ export default function AdminPage() {
                                 <div
                                   className={`h-full rounded-full transition-all ${
                                     job.status === 'failed' ? 'bg-red-500' :
-                                    job.status === 'completed' ? 'bg-emerald-500' : 'bg-blue-500'
+                                    job.status === 'completed' ? 'bg-blue-500' : 'bg-blue-500'
                                   }`}
                                   style={{ width: `${job.progress}%` }}
                                 />
@@ -568,8 +568,8 @@ export default function AdminPage() {
                 <Card className="bg-slate-50 border-slate-200">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-emerald-100">
-                        <TrendingUp className="h-5 w-5 text-emerald-600" />
+                      <div className="p-2.5 rounded-xl bg-blue-100">
+                        <TrendingUp className="h-5 w-5 text-blue-600" />
                       </div>
                       <div>
                         <p className="text-2xl font-semibold text-slate-900">2.4M</p>
@@ -623,7 +623,7 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <div className="mt-4 flex gap-3">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                     <Plus className="mr-2 h-4 w-4" />
                     Add Credits
                   </Button>

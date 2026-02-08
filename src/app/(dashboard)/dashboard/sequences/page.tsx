@@ -85,7 +85,7 @@ const mockSequences = [
 ];
 
 const statusConfig = {
-  active: { label: 'Active', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+  active: { label: 'Active', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
   paused: { label: 'Paused', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
   draft: { label: 'Draft', color: 'bg-slate-500/20 text-slate-400 border-slate-500/30' },
   completed: { label: 'Completed', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
@@ -124,8 +124,8 @@ export default function SequencesPage() {
         <Card glass>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-emerald-500/20">
-                <Play className="h-5 w-5 text-emerald-400" />
+              <div className="p-2 rounded-xl bg-blue-500/20">
+                <Play className="h-5 w-5 text-blue-400" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-white">2</p>

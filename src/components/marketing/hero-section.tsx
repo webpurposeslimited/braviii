@@ -16,7 +16,7 @@ const companyLogos = [
 
 export function HeroSection() {
   return (
-    <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 bg-[#E8F5E9] overflow-hidden">
+    <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 bg-slate-50 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           <motion.div
@@ -27,7 +27,7 @@ export function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-[1.15] tracking-tight mb-6">
               Go to market with{' '}
               <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600 italic">unique data</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500 italic">unique data</span>
               {' '} and{' '}
               <br className="hidden sm:block" />
               the ability to act on it
@@ -40,7 +40,7 @@ export function HeroSection() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link href="/signup">
-                <Button className="bg-black hover:bg-neutral-800 text-white px-8 py-6 text-base rounded-full">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base rounded-full">
                   Start building for free
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -67,16 +67,16 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Decorative plant shapes at bottom */}
+      {/* Decorative shapes at bottom */}
       <div className="absolute bottom-0 left-0 w-64 h-48 hidden lg:block">
-        <div className="absolute bottom-0 left-8 w-12 h-20 bg-emerald-400/70 rounded-t-full" />
-        <div className="absolute bottom-0 left-16 w-8 h-28 bg-emerald-500/70 rounded-t-full" />
-        <div className="absolute bottom-0 left-20 w-14 h-16 bg-emerald-400/70 rounded-t-full" />
+        <div className="absolute bottom-0 left-8 w-12 h-20 bg-blue-200/50 rounded-t-full" />
+        <div className="absolute bottom-0 left-16 w-8 h-28 bg-blue-300/50 rounded-t-full" />
+        <div className="absolute bottom-0 left-20 w-14 h-16 bg-blue-200/50 rounded-t-full" />
       </div>
       <div className="absolute bottom-0 right-0 w-64 h-48 hidden lg:block">
-        <div className="absolute bottom-0 right-8 w-12 h-24 bg-emerald-400/70 rounded-t-full" />
-        <div className="absolute bottom-0 right-16 w-10 h-32 bg-emerald-500/70 rounded-t-full" />
-        <div className="absolute bottom-0 right-24 w-14 h-18 bg-emerald-400/70 rounded-t-full" />
+        <div className="absolute bottom-0 right-8 w-12 h-24 bg-blue-200/50 rounded-t-full" />
+        <div className="absolute bottom-0 right-16 w-10 h-32 bg-blue-300/50 rounded-t-full" />
+        <div className="absolute bottom-0 right-24 w-14 h-18 bg-blue-200/50 rounded-t-full" />
       </div>
     </section>
   );

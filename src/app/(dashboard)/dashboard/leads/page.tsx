@@ -113,13 +113,13 @@ const statusColors = {
   new: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   contacted: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
   engaged: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  qualified: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  qualified: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   converted: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
   unqualified: 'bg-red-500/20 text-red-400 border-red-500/30',
 };
 
 const emailStatusIcons = {
-  valid: <CheckCircle className="h-4 w-4 text-emerald-400" />,
+  valid: <CheckCircle className="h-4 w-4 text-blue-400" />,
   invalid: <XCircle className="h-4 w-4 text-red-400" />,
   risky: <AlertCircle className="h-4 w-4 text-amber-400" />,
   pending: <AlertCircle className="h-4 w-4 text-white/40" />,

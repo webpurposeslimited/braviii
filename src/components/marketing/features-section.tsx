@@ -36,14 +36,14 @@ const features = [
     icon: GitMerge,
     title: 'Enrich once, output everywhere, all at once.',
     description: 'Push enriched data to your CRM, email tools, and data warehouse automatically.',
-    color: 'bg-emerald-100',
-    iconColor: 'text-emerald-500',
+    color: 'bg-blue-100',
+    iconColor: 'text-blue-500',
   },
 ];
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-20 lg:py-28 bg-[#E8F5E9] relative overflow-hidden">
+    <section id="features" className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left side - Feature cards */}

@@ -27,7 +27,7 @@ const qualityMetrics = [
 
 export function DataQualitySection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#E8F5E9] relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,7 +38,7 @@ export function DataQualitySection() {
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
             Data quality we&apos;re{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600 italic">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500 italic">
               proud of
             </span>
           </h2>
@@ -58,7 +58,7 @@ export function DataQualitySection() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <div className="bg-white rounded-2xl p-6 text-center border border-emerald-100 hover:border-emerald-200 transition-colors shadow-sm">
+              <div className="bg-white rounded-2xl p-6 text-center border border-slate-200 hover:border-blue-200 transition-colors shadow-sm">
                 <div className="text-4xl sm:text-5xl font-bold text-black mb-2">
                   {metric.value}
                 </div>

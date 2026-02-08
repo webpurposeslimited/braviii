@@ -17,7 +17,7 @@ const testimonials = [
     role: 'Growth Lead',
     company: 'Ramp',
     initials: 'MR',
-    gradient: 'from-teal-400 to-emerald-500',
+    gradient: 'from-teal-400 to-blue-500',
   },
   {
     content: "Finally, an all-in-one solution that actually works. The enrichment quality is consistently impressive.",
@@ -39,7 +39,7 @@ const companyLogos = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#E8F5E9] relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,7 +50,7 @@ export function TestimonialsSection() {
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
             What our customers{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600 italic">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500 italic">
               say about us
             </span>
           </h2>

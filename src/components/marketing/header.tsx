@@ -17,12 +17,12 @@ export function MarketingHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#E8F5E9] border-b border-emerald-100">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-x-12">
             <Link href="/" className="flex items-center gap-2">
-              <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-lg font-bold text-white">B</span>
               </div>
               <span className="text-xl font-bold text-black">Bravilio</span>
@@ -48,7 +48,7 @@ export function MarketingHeader() {
               </Button>
             </Link>
             <Link href="/signup">
-              <Button className="bg-black hover:bg-neutral-800 text-white rounded-full">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full">
                 Get Started
               </Button>
             </Link>
@@ -114,7 +114,7 @@ export function MarketingHeader() {
                   </Button>
                 </Link>
                 <Link href="/signup" className="block">
-                  <Button className="w-full bg-black hover:bg-neutral-800 text-white rounded-full">
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full">
                     Get Started
                   </Button>
                 </Link>

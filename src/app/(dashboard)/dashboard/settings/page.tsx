@@ -271,7 +271,7 @@ export default function SettingsPage() {
                       <p className="font-medium text-white">Current Session</p>
                       <p className="text-sm text-white/60">Chrome on Windows • San Francisco, CA</p>
                     </div>
-                    <span className="text-xs text-emerald-400">Active now</span>
+                    <span className="text-xs text-blue-400">Active now</span>
                   </div>
                 </div>
                 <Button variant="ghost" className="mt-4 text-red-400">

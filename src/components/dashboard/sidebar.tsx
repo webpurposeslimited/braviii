@@ -17,6 +17,8 @@ import {
   HelpCircle,
   ChevronLeft,
   ChevronRight,
+  MessageSquare,
+  Shield,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -31,11 +33,13 @@ const mainNavItems = [
   { name: 'Sequences', href: '/dashboard/sequences', icon: Mail },
   { name: 'LinkedIn Tasks', href: '/dashboard/linkedin', icon: Linkedin },
   { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+  { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
 ];
 
 const bottomNavItems = [
   { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  { name: 'Admin', href: '/admin', icon: Shield },
   { name: 'Help', href: '/dashboard/help', icon: HelpCircle },
 ];
 
@@ -46,13 +50,13 @@ export function DashboardSidebar() {
   return (
     <aside
       className={cn(
-        'relative flex flex-col h-full bg-white border-r border-emerald-100 transition-all duration-300',
+        'relative flex flex-col h-full bg-white border-r border-slate-200 transition-all duration-300',
         collapsed ? 'w-20' : 'w-64'
       )}
     >
-      <div className="flex items-center h-16 px-4 border-b border-emerald-100">
+      <div className="flex items-center h-16 px-4 border-b border-slate-200">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="h-8 w-8 flex-shrink-0 bg-emerald-500 rounded-lg flex items-center justify-center">
+          <div className="h-8 w-8 flex-shrink-0 bg-blue-600 rounded-lg flex items-center justify-center">
             <span className="text-lg font-bold text-white">B</span>
           </div>
           {!collapsed && (
@@ -77,18 +81,18 @@ export function DashboardSidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'text-neutral-600 hover:text-emerald-600 hover:bg-emerald-50/50'
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
               )}
             >
-              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-emerald-600' : 'text-neutral-400')} />
+              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-blue-600' : 'text-slate-400')} />
               {!collapsed && <span>{item.name}</span>}
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-emerald-100 py-4 px-3 space-y-0.5">
+      <div className="border-t border-slate-200 py-4 px-3 space-y-0.5">
         {bottomNavItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -98,11 +102,11 @@ export function DashboardSidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'text-neutral-600 hover:text-emerald-600 hover:bg-emerald-50/50'
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
               )}
             >
-              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-emerald-600' : 'text-neutral-400')} />
+              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-blue-600' : 'text-slate-400')} />
               {!collapsed && <span>{item.name}</span>}
             </Link>
           );
@@ -112,7 +116,7 @@ export function DashboardSidebar() {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute -right-3 top-20 h-6 w-6 rounded-full border border-emerald-200 bg-white text-neutral-400 hover:text-emerald-600"
+        className="absolute -right-3 top-20 h-6 w-6 rounded-full border border-slate-200 bg-white text-slate-400 hover:text-blue-600"
         onClick={() => setCollapsed(!collapsed)}
       >
         {collapsed ? (

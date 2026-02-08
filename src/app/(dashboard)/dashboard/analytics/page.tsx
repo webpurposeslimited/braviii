@@ -53,7 +53,7 @@ const overviewStats = [
     change: '+18.7%',
     trend: 'up',
     icon: Users,
-    color: 'from-emerald-500 to-teal-500',
+    color: 'from-blue-500 to-teal-500',
   },
 ];
 
@@ -119,7 +119,7 @@ export default function AnalyticsPage() {
                     <stat.icon className="h-5 w-5 text-white" />
                   </div>
                   <div className={`flex items-center gap-1 text-sm ${
-                    stat.trend === 'up' ? 'text-emerald-400' : 'text-red-400'
+                    stat.trend === 'up' ? 'text-blue-400' : 'text-red-400'
                   }`}>
                     {stat.trend === 'up' ? (
                       <TrendingUp className="h-4 w-4" />
@@ -262,7 +262,7 @@ export default function AnalyticsPage() {
                         <td className="p-4 text-sm text-white/80 text-right">{campaign.sent}</td>
                         <td className="p-4 text-sm text-white/80 text-right">{campaign.opened}</td>
                         <td className="p-4 text-sm text-white/80 text-right">{campaign.clicked}</td>
-                        <td className="p-4 text-sm text-emerald-400 text-right">{campaign.replied}</td>
+                        <td className="p-4 text-sm text-blue-400 text-right">{campaign.replied}</td>
                         <td className="p-4 text-sm text-red-400 text-right">{campaign.bounced}</td>
                         <td className="p-4 text-right">
                           <span className="text-sm text-white">{openRate}%</span>

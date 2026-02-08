@@ -5,6 +5,7 @@ import { hashPassword } from '@/lib/auth';
 import { createWorkspace } from '@/lib/workspace';
 import { successResponse, errorResponse, ErrorCodes } from '@/lib/api-response';
 import { slugify } from '@/lib/utils';
+import { validateBusinessEmail } from '@/lib/business-email';
 
 const registerSchema = z.object({
   name: z.string().min(2).max(100),
@@ -17,6 +18,16 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const data = registerSchema.parse(body);
+
+    // Business email validation
+    const emailCheck = validateBusinessEmail(data.email);
+    if (!emailCheck.valid) {
+      return errorResponse(
+        ErrorCodes.VALIDATION_ERROR,
+        emailCheck.reason || 'Business email required',
+        400
+      );
+    }
 
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },

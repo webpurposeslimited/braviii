@@ -14,7 +14,7 @@ const workflowFeatures = [
 
 export function WorkflowsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#E8F5E9] relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-white relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Content */}
@@ -26,7 +26,7 @@ export function WorkflowsSection() {
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
               Turn data into action with flexible,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600 italic">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500 italic">
                 reliable workflows
               </span>
             </h2>
@@ -39,8 +39,8 @@ export function WorkflowsSection() {
             <ul className="space-y-4 mb-8">
               {workflowFeatures.map((feature) => (
                 <li key={feature} className="flex items-center gap-3">
-                  <div className="h-5 w-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                    <Check className="h-3 w-3 text-green-600" />
+                  <div className="h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                    <Check className="h-3 w-3 text-blue-600" />
                   </div>
                   <span className="text-neutral-700">{feature}</span>
                 </li>
@@ -48,7 +48,7 @@ export function WorkflowsSection() {
             </ul>
 
             <Link href="/signup">
-              <Button className="bg-black hover:bg-neutral-800 text-white px-6 py-5 rounded-full">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-5 rounded-full">
                 Start building workflows
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

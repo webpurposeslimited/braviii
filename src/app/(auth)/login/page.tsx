@@ -73,26 +73,23 @@ export default function LoginPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="glass-card p-8">
+      <div className="bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="relative h-10 w-10">
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary to-accent-cyan" />
-              <div className="absolute inset-[2px] rounded-[10px] bg-dark flex items-center justify-center">
-                <span className="text-xl font-bold gradient-text">B</span>
-              </div>
+            <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
+              <span className="text-xl font-bold text-white">B</span>
             </div>
-            <span className="text-2xl font-bold text-white">Bravilio</span>
+            <span className="text-2xl font-bold text-black">Bravilio</span>
           </Link>
-          <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-white/60">Sign in to your account to continue</p>
+          <h1 className="text-2xl font-bold text-black mb-2">Welcome back</h1>
+          <p className="text-neutral-600">Sign in to your account to continue</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
               <Input
                 id="email"
                 type="email"
@@ -111,13 +108,13 @@ export default function LoginPage() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-sm text-accent-cyan hover:text-accent-sky"
+                className="text-sm text-blue-600 hover:text-blue-700"
               >
                 Forgot password?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
               <Input
                 id="password"
                 type="password"
@@ -133,8 +130,7 @@ export default function LoginPage() {
 
           <Button
             type="submit"
-            variant="cyan"
-            className="w-full"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -147,25 +143,25 @@ export default function LoginPage() {
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/10" />
+            <div className="w-full border-t border-neutral-200" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-dark-50 text-white/40">Or continue with</span>
+            <span className="px-2 bg-white text-neutral-500">Or continue with</span>
           </div>
         </div>
 
         <Button
-          variant="glass"
-          className="w-full"
+          variant="outline"
+          className="w-full border-neutral-300 hover:bg-neutral-50"
           onClick={handleGoogleSignIn}
         >
           <Chrome className="mr-2 h-4 w-4" />
           Google
         </Button>
 
-        <p className="mt-6 text-center text-sm text-white/60">
+        <p className="mt-6 text-center text-sm text-neutral-600">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-accent-cyan hover:text-accent-sky">
+          <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
             Sign up
           </Link>
         </p>

@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const taskStats = [
   { label: 'Pending', value: 12, icon: Clock, color: 'text-amber-400' },
-  { label: 'Completed Today', value: 8, icon: CheckCircle, color: 'text-emerald-400' },
+  { label: 'Completed Today', value: 8, icon: CheckCircle, color: 'text-blue-400' },
   { label: 'Connection Requests', value: 5, icon: UserPlus, color: 'text-blue-400' },
   { label: 'Messages to Send', value: 7, icon: MessageSquare, color: 'text-purple-400' },
 ];
@@ -70,7 +70,7 @@ const pendingTasks = [
 const taskTypeConfig = {
   connection: { icon: UserPlus, label: 'Send Connection', color: 'bg-blue-500/20 text-blue-400' },
   message: { icon: MessageSquare, label: 'Send Message', color: 'bg-purple-500/20 text-purple-400' },
-  view: { icon: Eye, label: 'View Profile', color: 'bg-emerald-500/20 text-emerald-400' },
+  view: { icon: Eye, label: 'View Profile', color: 'bg-blue-500/20 text-blue-400' },
 };
 
 export default function LinkedInTasksPage() {
@@ -208,7 +208,7 @@ export default function LinkedInTasksPage() {
           {activeTasks.length === 0 && (
             <Card glass>
               <CardContent className="p-12 text-center">
-                <CheckCircle className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
+                <CheckCircle className="h-12 w-12 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-white mb-2">All caught up!</h3>
                 <p className="text-white/60">No pending LinkedIn tasks</p>
               </CardContent>
@@ -226,7 +226,7 @@ export default function LinkedInTasksPage() {
                     .map(task => (
                       <div key={task.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                         <div className="flex items-center gap-3">
-                          <CheckCircle className="h-5 w-5 text-emerald-400" />
+                          <CheckCircle className="h-5 w-5 text-blue-400" />
                           <span className="text-white">{task.lead.name}</span>
                           <Badge variant="outline" className="text-white/60">
                             {taskTypeConfig[task.type as keyof typeof taskTypeConfig].label}

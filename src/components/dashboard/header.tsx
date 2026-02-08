@@ -57,7 +57,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
   };
 
   return (
-    <header className="h-16 border-b border-emerald-100 bg-white">
+    <header className="h-16 border-b border-slate-200 bg-white">
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-4 flex-1">
           <div className="relative w-80">
@@ -107,14 +107,14 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button className="gap-2 bg-emerald-500 hover:bg-emerald-600 text-white" size="sm">
+          <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white" size="sm">
             <Plus className="h-4 w-4" />
             Add Leads
           </Button>
 
           <Button variant="ghost" size="icon" className="relative text-neutral-500 hover:text-black hover:bg-neutral-100">
             <Bell className="h-5 w-5" />
-            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-600" />
           </Button>
 
           <DropdownMenu>
@@ -122,7 +122,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
               <Button variant="ghost" className="gap-2 pl-2 hover:bg-neutral-100">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.image || undefined} alt={user.name || 'User'} />
-                  <AvatarFallback className="bg-emerald-500 text-white text-sm">
+                  <AvatarFallback className="bg-blue-600 text-white text-sm">
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>

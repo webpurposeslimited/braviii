@@ -38,7 +38,7 @@ const stats = [
     change: '+15.3%',
     trend: 'up',
     icon: CheckCircle,
-    color: 'from-emerald-500 to-teal-500',
+    color: 'from-blue-500 to-teal-500',
   },
   {
     name: 'Reply Rate',
@@ -69,12 +69,12 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <p className="text-white/60 mt-1">Welcome back! Here&apos;s what&apos;s happening.</p>
+          <h1 className="text-3xl font-bold text-black">Dashboard</h1>
+          <p className="text-neutral-600 mt-1">Welcome back! Here&apos;s what&apos;s happening.</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="glass">View Reports</Button>
-          <Button variant="cyan">
+          <Button variant="outline" className="border-neutral-300 hover:bg-neutral-50">View Reports</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
             <Target className="mr-2 h-4 w-4" />
             New Campaign
           </Button>
@@ -89,14 +89,14 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card glass className="overflow-hidden">
+            <Card className="overflow-hidden bg-white border-neutral-200">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className={`p-2 rounded-xl bg-gradient-to-br ${stat.color}`}>
                     <stat.icon className="h-5 w-5 text-white" />
                   </div>
-                  <div className={`flex items-center gap-1 text-sm ${
-                    stat.trend === 'up' ? 'text-emerald-400' : 'text-red-400'
+                  <div className={`flex items-center gap-1 text-sm font-medium ${
+                    stat.trend === 'up' ? 'text-blue-600' : 'text-red-600'
                   }`}>
                     {stat.trend === 'up' ? (
                       <ArrowUpRight className="h-4 w-4" />
@@ -107,8 +107,8 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
-                  <p className="text-sm text-white/60">{stat.name}</p>
+                  <p className="text-2xl font-bold text-black">{stat.value}</p>
+                  <p className="text-sm text-neutral-600">{stat.name}</p>
                 </div>
               </CardContent>
             </Card>
@@ -122,10 +122,10 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
         >
-          <Card glass>
+          <Card className="bg-white border-neutral-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Activity className="h-5 w-5 text-accent-cyan" />
+              <CardTitle className="text-black flex items-center gap-2">
+                <Activity className="h-5 w-5 text-blue-600" />
                 Recent Activity
               </CardTitle>
             </CardHeader>
@@ -134,10 +134,10 @@ export default function DashboardPage() {
                 {recentActivity.map((activity, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between py-2 border-b border-white/5 last:border-0"
+                    className="flex items-center justify-between py-2 border-b border-neutral-100 last:border-0"
                   >
-                    <p className="text-sm text-white/80">{activity.message}</p>
-                    <span className="text-xs text-white/40">{activity.time}</span>
+                    <p className="text-sm text-neutral-700">{activity.message}</p>
+                    <span className="text-xs text-neutral-500">{activity.time}</span>
                   </div>
                 ))}
               </div>
@@ -150,10 +150,10 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
         >
-          <Card glass>
+          <Card className="bg-white border-neutral-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Mail className="h-5 w-5 text-primary-400" />
+              <CardTitle className="text-black flex items-center gap-2">
+                <Mail className="h-5 w-5 text-blue-600" />
                 Active Campaigns
               </CardTitle>
             </CardHeader>
@@ -166,18 +166,18 @@ export default function DashboardPage() {
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-white">{campaign.name}</span>
+                          <span className="text-sm font-medium text-black">{campaign.name}</span>
                           <span className={`text-xs px-2 py-0.5 rounded-full ${
                             campaign.status === 'active'
-                              ? 'bg-emerald-500/20 text-emerald-400'
-                              : 'bg-amber-500/20 text-amber-400'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-amber-100 text-amber-700'
                           }`}>
                             {campaign.status}
                           </span>
                         </div>
-                        <span className="text-xs text-white/40">{campaign.sent} sent</span>
+                        <span className="text-xs text-neutral-500">{campaign.sent} sent</span>
                       </div>
-                      <div className="flex gap-4 text-xs text-white/60">
+                      <div className="flex gap-4 text-xs text-neutral-600">
                         <span>Open: {openRate}%</span>
                         <span>Reply: {replyRate}%</span>
                       </div>
@@ -196,11 +196,11 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.6 }}
       >
-        <Card glass>
+        <Card className="bg-white border-neutral-200">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white">Credits Usage</CardTitle>
-              <Button variant="outline" size="sm">
+              <CardTitle className="text-black">Credits Usage</CardTitle>
+              <Button variant="outline" size="sm" className="border-neutral-300 hover:bg-neutral-50">
                 Buy Credits
               </Button>
             </div>
@@ -209,22 +209,22 @@ export default function DashboardPage() {
             <div className="grid gap-6 md:grid-cols-3">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/60">Email Verifications</span>
-                  <span className="text-white">2,450 / 5,000</span>
+                  <span className="text-neutral-600">Email Verifications</span>
+                  <span className="text-black font-medium">2,450 / 5,000</span>
                 </div>
                 <Progress value={49} className="h-2" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/60">Enrichments</span>
-                  <span className="text-white">890 / 2,000</span>
+                  <span className="text-neutral-600">Enrichments</span>
+                  <span className="text-black font-medium">890 / 2,000</span>
                 </div>
                 <Progress value={44.5} className="h-2" />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/60">AI Generation</span>
-                  <span className="text-white">1,200 / 3,000</span>
+                  <span className="text-neutral-600">AI Generation</span>
+                  <span className="text-black font-medium">1,200 / 3,000</span>
                 </div>
                 <Progress value={40} className="h-2" />
               </div>

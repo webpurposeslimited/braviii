@@ -25,6 +25,10 @@ model User {
   workspaceMembers  WorkspaceMember[]
   invitesSent       Invite[]          @relation("InvitesSent")
   auditLogs         AuditLog[]
+  adminRoles        UserAdminRole[]
+  ticketsCreated    Ticket[]          @relation("TicketsCreated")
+  ticketsAssigned   Ticket[]          @relation("TicketsAssigned")
+  ticketMessages    TicketMessage[]
   
   @@index([email])
 }
@@ -96,6 +100,7 @@ model Workspace {
   auditLogs         AuditLog[]
   subscription      Subscription?
   creditsLedger     CreditsLedger[]
+  tickets           Ticket[]
 
   @@index([slug])
 }
@@ -875,4 +880,174 @@ enum CreditType {
   REFUND
   BONUS
   ADJUSTMENT
+}
+
+// ==================== RBAC - ADMIN ROLES & PERMISSIONS ====================
+
+model AdminRole {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions AdminRolePermission[]
+  users       UserAdminRole[]
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  group       String
+  description String?
+  createdAt   DateTime @default(now())
+
+  roles AdminRolePermission[]
+
+  @@index([group])
+}
+
+model AdminRolePermission {
+  id           String @id @default(cuid())
+  adminRoleId  String
+  permissionId String
+
+  adminRole  AdminRole  @relation(fields: [adminRoleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([adminRoleId, permissionId])
+  @@index([adminRoleId])
+  @@index([permissionId])
+}
+
+model UserAdminRole {
+  id          String   @id @default(cuid())
+  userId      String
+  adminRoleId String
+  assignedAt  DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  adminRole AdminRole @relation(fields: [adminRoleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, adminRoleId])
+  @@index([userId])
+  @@index([adminRoleId])
+}
+
+// ==================== SUPPORT TICKETS ====================
+
+model Ticket {
+  id               String       @id @default(cuid())
+  tenantId         String?
+  createdByUserId  String
+  subject          String
+  category         String
+  priority         TicketPriority @default(MEDIUM)
+  status           TicketStatus   @default(OPEN)
+  assignedToAdminId String?
+  closedAt         DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  createdBy        User         @relation("TicketsCreated", fields: [createdByUserId], references: [id])
+  assignedTo       User?        @relation("TicketsAssigned", fields: [assignedToAdminId], references: [id])
+  workspace        Workspace?   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  messages         TicketMessage[]
+  statusHistory    TicketStatusHistory[]
+
+  @@index([createdByUserId])
+  @@index([assignedToAdminId])
+  @@index([tenantId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  PENDING
+  WAITING_ON_USER
+  CLOSED
+}
+
+model TicketMessage {
+  id         String            @id @default(cuid())
+  ticketId   String
+  senderType TicketSenderType
+  senderId   String
+  message    String            @db.Text
+  isInternal Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+
+  ticket      Ticket             @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sender      User               @relation(fields: [senderId], references: [id])
+  attachments TicketAttachment[]
+
+  @@index([ticketId])
+  @@index([senderId])
+}
+
+enum TicketSenderType {
+  USER
+  ADMIN
+}
+
+model TicketAttachment {
+  id              String   @id @default(cuid())
+  ticketMessageId String
+  fileUrl         String
+  fileName        String
+  mimeType        String
+  size            Int
+  createdAt       DateTime @default(now())
+
+  ticketMessage TicketMessage @relation(fields: [ticketMessageId], references: [id], onDelete: Cascade)
+
+  @@index([ticketMessageId])
+}
+
+model TicketStatusHistory {
+  id            String   @id @default(cuid())
+  ticketId      String
+  oldStatus     TicketStatus
+  newStatus     TicketStatus
+  changedBy     String
+  changedByType TicketSenderType
+  createdAt     DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([createdAt])
+}
+
+// ==================== APOLLO CREDENTIALS ====================
+
+model ApolloCredential {
+  id            String                @id @default(cuid())
+  ownerType     ApolloCredentialOwner
+  ownerId       String
+  apiKey        String                @db.Text
+  label         String?
+  isDefault     Boolean               @default(false)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  @@index([ownerType, ownerId])
+  @@index([ownerType, isDefault])
+}
+
+enum ApolloCredentialOwner {
+  SYSTEM
+  TENANT
+  USER
 }

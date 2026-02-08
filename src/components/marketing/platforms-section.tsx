@@ -8,7 +8,7 @@ const platforms = [
   { name: 'Outreach', color: 'bg-lime-100', textColor: 'text-lime-600' },
   { name: 'Apollo', color: 'bg-blue-100', textColor: 'text-blue-600' },
   { name: 'Clearbit', color: 'bg-cyan-100', textColor: 'text-cyan-600' },
-  { name: 'ZoomInfo', color: 'bg-emerald-100', textColor: 'text-emerald-600' },
+  { name: 'ZoomInfo', color: 'bg-teal-100', textColor: 'text-teal-600' },
   { name: 'LinkedIn', color: 'bg-sky-100', textColor: 'text-sky-600' },
   { name: 'Slack', color: 'bg-violet-100', textColor: 'text-violet-600' },
   { name: 'Zapier', color: 'bg-orange-100', textColor: 'text-orange-600' },
@@ -19,7 +19,7 @@ const platforms = [
 
 export function PlatformsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-[#E8F5E9] relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -31,7 +31,7 @@ export function PlatformsSection() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
             Cut costs, access data from{' '}
             <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600 italic">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500 italic">
               one central platform
             </span>
           </h2>

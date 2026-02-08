@@ -7,18 +7,18 @@ import { Button } from '@/components/ui/button';
 
 export function CTASection() {
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-green-50 to-emerald-100 relative overflow-hidden">
-      {/* Nature-inspired decorative elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-green-200/50 to-transparent" />
+    <section className="py-20 lg:py-28 bg-gradient-to-b from-blue-50 to-slate-100 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-100/50 to-transparent" />
       <div className="absolute bottom-0 left-0 w-64 h-64">
-        <div className="absolute bottom-0 left-8 w-16 h-24 bg-green-300/60 rounded-t-full" />
-        <div className="absolute bottom-0 left-20 w-12 h-32 bg-green-400/60 rounded-t-full" />
-        <div className="absolute bottom-0 left-28 w-20 h-20 bg-green-300/60 rounded-t-full" />
+        <div className="absolute bottom-0 left-8 w-16 h-24 bg-blue-200/60 rounded-t-full" />
+        <div className="absolute bottom-0 left-20 w-12 h-32 bg-blue-300/60 rounded-t-full" />
+        <div className="absolute bottom-0 left-28 w-20 h-20 bg-blue-200/60 rounded-t-full" />
       </div>
       <div className="absolute bottom-0 right-0 w-64 h-64">
-        <div className="absolute bottom-0 right-8 w-16 h-28 bg-green-300/60 rounded-t-full" />
-        <div className="absolute bottom-0 right-20 w-14 h-36 bg-green-400/60 rounded-t-full" />
-        <div className="absolute bottom-0 right-32 w-18 h-22 bg-green-300/60 rounded-t-full" />
+        <div className="absolute bottom-0 right-8 w-16 h-28 bg-blue-200/60 rounded-t-full" />
+        <div className="absolute bottom-0 right-20 w-14 h-36 bg-blue-300/60 rounded-t-full" />
+        <div className="absolute bottom-0 right-32 w-18 h-22 bg-blue-200/60 rounded-t-full" />
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -31,7 +31,7 @@ export function CTASection() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
             Turn your growth ideas{' '}
             <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
               into reality today
             </span>
           </h2>
@@ -40,7 +40,7 @@ export function CTASection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
-              <Button className="bg-black hover:bg-neutral-800 text-white px-8 py-6 text-base rounded-full">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base rounded-full">
                 Start building for free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

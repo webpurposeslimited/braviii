@@ -38,12 +38,12 @@ const socialLinks = [
 
 export function MarketingFooter() {
   return (
-    <footer className="border-t border-emerald-100 bg-[#E8F5E9]">
+    <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-lg font-bold text-white">B</span>
               </div>
               <span className="text-xl font-bold text-black">Bravilio</span>

@@ -249,7 +249,7 @@ export default function BillingPage() {
                     <tr key={index} className="border-b border-white/5 hover:bg-white/5">
                       <td className="p-4 text-sm text-white/60">{item.date}</td>
                       <td className="p-4 text-sm text-white">{item.description}</td>
-                      <td className={`p-4 text-sm text-right ${item.amount > 0 ? 'text-emerald-400' : 'text-white/80'}`}>
+                      <td className={`p-4 text-sm text-right ${item.amount > 0 ? 'text-blue-400' : 'text-white/80'}`}>
                         {item.amount > 0 ? '+' : ''}{item.amount.toLocaleString()}
                       </td>
                       <td className="p-4 text-sm text-white text-right">{item.balance.toLocaleString()}</td>
