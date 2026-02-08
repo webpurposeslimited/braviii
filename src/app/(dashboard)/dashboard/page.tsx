@@ -5,233 +5,90 @@ import {
   Users,
   Mail,
   CheckCircle,
-  TrendingUp,
-  ArrowUpRight,
-  ArrowDownRight,
-  Activity,
-  Target,
+  Workflow,
+  BarChart3,
+  ArrowRight,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
-const stats = [
+const sections = [
   {
-    name: 'Total Leads',
-    value: '12,847',
-    change: '+12.5%',
-    trend: 'up',
+    title: 'Leads',
+    description: 'Import and manage your leads',
     icon: Users,
+    href: '/dashboard/leads',
     color: 'from-blue-500 to-cyan-500',
   },
   {
-    name: 'Emails Sent',
-    value: '8,234',
-    change: '+8.2%',
-    trend: 'up',
-    icon: Mail,
+    title: 'Enrichment',
+    description: 'Enrich lead data with company info',
+    icon: Workflow,
+    href: '/dashboard/enrichment',
     color: 'from-purple-500 to-pink-500',
   },
   {
-    name: 'Verified Emails',
-    value: '6,521',
-    change: '+15.3%',
-    trend: 'up',
+    title: 'Email Verification',
+    description: 'Verify email addresses before sending',
     icon: CheckCircle,
+    href: '/dashboard/verification',
     color: 'from-blue-500 to-teal-500',
   },
   {
-    name: 'Reply Rate',
-    value: '23.4%',
-    change: '-2.1%',
-    trend: 'down',
-    icon: TrendingUp,
-    color: 'from-orange-500 to-red-500',
+    title: 'Sequences',
+    description: 'Create and manage email sequences',
+    icon: Mail,
+    href: '/dashboard/sequences',
+    color: 'from-sky-500 to-blue-600',
   },
-];
-
-const recentActivity = [
-  { type: 'lead', message: 'Imported 250 leads from CSV', time: '5 min ago' },
-  { type: 'email', message: 'Campaign "Q4 Outreach" sent to 150 leads', time: '15 min ago' },
-  { type: 'verify', message: 'Verified 500 emails (485 valid)', time: '1 hour ago' },
-  { type: 'enrich', message: 'Enriched 75 leads with company data', time: '2 hours ago' },
-  { type: 'reply', message: '12 new replies received', time: '3 hours ago' },
-];
-
-const campaigns = [
-  { name: 'Q4 Enterprise Outreach', sent: 450, delivered: 445, opened: 312, replied: 45, status: 'active' },
-  { name: 'Product Launch', sent: 1200, delivered: 1180, opened: 756, replied: 89, status: 'active' },
-  { name: 'Follow-up Sequence', sent: 320, delivered: 315, opened: 201, replied: 28, status: 'paused' },
+  {
+    title: 'Analytics',
+    description: 'Track campaign performance',
+    icon: BarChart3,
+    href: '/dashboard/analytics',
+    color: 'from-amber-500 to-orange-500',
+  },
 ];
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-black">Dashboard</h1>
-          <p className="text-neutral-600 mt-1">Welcome back! Here&apos;s what&apos;s happening.</p>
-        </div>
-        <div className="flex gap-3">
-          <Button variant="outline" className="border-neutral-300 hover:bg-neutral-50">View Reports</Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Target className="mr-2 h-4 w-4" />
-            New Campaign
-          </Button>
-        </div>
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
+        <p className="text-slate-500 mt-1">Welcome back! Get started by choosing a section below.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {sections.map((section, index) => (
           <motion.div
-            key={stat.name}
+            key={section.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="overflow-hidden bg-white border-neutral-200">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className={`p-2 rounded-xl bg-gradient-to-br ${stat.color}`}>
-                    <stat.icon className="h-5 w-5 text-white" />
+            <Link href={section.href}>
+              <Card className="bg-white border-slate-200 hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${section.color}`}>
+                      <section.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-slate-400" />
                   </div>
-                  <div className={`flex items-center gap-1 text-sm font-medium ${
-                    stat.trend === 'up' ? 'text-blue-600' : 'text-red-600'
-                  }`}>
-                    {stat.trend === 'up' ? (
-                      <ArrowUpRight className="h-4 w-4" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4" />
-                    )}
-                    {stat.change}
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <p className="text-2xl font-bold text-black">{stat.value}</p>
-                  <p className="text-sm text-neutral-600">{stat.name}</p>
-                </div>
-              </CardContent>
-            </Card>
+                  <CardTitle className="text-slate-900 mt-4">{section.title}</CardTitle>
+                  <CardDescription>{section.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button variant="outline" size="sm" className="border-slate-300">
+                    Get Started
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
           </motion.div>
         ))}
       </div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
-        >
-          <Card className="bg-white border-neutral-200">
-            <CardHeader>
-              <CardTitle className="text-black flex items-center gap-2">
-                <Activity className="h-5 w-5 text-blue-600" />
-                Recent Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between py-2 border-b border-neutral-100 last:border-0"
-                  >
-                    <p className="text-sm text-neutral-700">{activity.message}</p>
-                    <span className="text-xs text-neutral-500">{activity.time}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}
-        >
-          <Card className="bg-white border-neutral-200">
-            <CardHeader>
-              <CardTitle className="text-black flex items-center gap-2">
-                <Mail className="h-5 w-5 text-blue-600" />
-                Active Campaigns
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {campaigns.map((campaign, index) => {
-                  const openRate = Math.round((campaign.opened / campaign.delivered) * 100);
-                  const replyRate = Math.round((campaign.replied / campaign.delivered) * 100);
-                  return (
-                    <div key={index} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-black">{campaign.name}</span>
-                          <span className={`text-xs px-2 py-0.5 rounded-full ${
-                            campaign.status === 'active'
-                              ? 'bg-blue-100 text-blue-700'
-                              : 'bg-amber-100 text-amber-700'
-                          }`}>
-                            {campaign.status}
-                          </span>
-                        </div>
-                        <span className="text-xs text-neutral-500">{campaign.sent} sent</span>
-                      </div>
-                      <div className="flex gap-4 text-xs text-neutral-600">
-                        <span>Open: {openRate}%</span>
-                        <span>Reply: {replyRate}%</span>
-                      </div>
-                      <Progress value={openRate} className="h-1.5" />
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.6 }}
-      >
-        <Card className="bg-white border-neutral-200">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-black">Credits Usage</CardTitle>
-              <Button variant="outline" size="sm" className="border-neutral-300 hover:bg-neutral-50">
-                Buy Credits
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Email Verifications</span>
-                  <span className="text-black font-medium">2,450 / 5,000</span>
-                </div>
-                <Progress value={49} className="h-2" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">Enrichments</span>
-                  <span className="text-black font-medium">890 / 2,000</span>
-                </div>
-                <Progress value={44.5} className="h-2" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-600">AI Generation</span>
-                  <span className="text-black font-medium">1,200 / 3,000</span>
-                </div>
-                <Progress value={40} className="h-2" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
     </div>
   );
 }

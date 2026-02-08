@@ -51,73 +51,8 @@ interface Client {
   emailsSent: number;
 }
 
-const mockClients: Client[] = [
-  {
-    id: '1',
-    name: 'John Smith',
-    email: 'john@acmecorp.com',
-    company: 'Acme Corp',
-    plan: 'Enterprise',
-    status: 'active',
-    mrr: 499,
-    joinedDate: '2024-01-15',
-    lastActive: '2 hours ago',
-    leads: 45230,
-    emailsSent: 12400,
-  },
-  {
-    id: '2',
-    name: 'Sarah Johnson',
-    email: 'sarah@techstart.io',
-    company: 'TechStart Inc',
-    plan: 'Professional',
-    status: 'active',
-    mrr: 149,
-    joinedDate: '2024-02-20',
-    lastActive: '1 day ago',
-    leads: 18500,
-    emailsSent: 8200,
-  },
-  {
-    id: '3',
-    name: 'Michael Chen',
-    email: 'michael@global.com',
-    company: 'Global Solutions',
-    plan: 'Professional',
-    status: 'trial',
-    mrr: 0,
-    joinedDate: '2024-03-01',
-    lastActive: '3 hours ago',
-    leads: 2300,
-    emailsSent: 450,
-  },
-  {
-    id: '4',
-    name: 'Emily Davis',
-    email: 'emily@innovate.co',
-    company: 'Innovation Labs',
-    plan: 'Starter',
-    status: 'active',
-    mrr: 49,
-    joinedDate: '2023-11-10',
-    lastActive: '5 days ago',
-    leads: 8900,
-    emailsSent: 3200,
-  },
-  {
-    id: '5',
-    name: 'David Wilson',
-    email: 'david@digital.com',
-    company: 'Digital Ventures',
-    plan: 'Enterprise',
-    status: 'inactive',
-    mrr: 0,
-    joinedDate: '2023-08-05',
-    lastActive: '30 days ago',
-    leads: 52100,
-    emailsSent: 18900,
-  },
-];
+// TODO: Wire to real API endpoint (e.g. /api/admin/clients)
+const mockClients: Client[] = [];
 
 export default function ClientsDashboardPage() {
   const [clients, setClients] = useState<Client[]>(mockClients);

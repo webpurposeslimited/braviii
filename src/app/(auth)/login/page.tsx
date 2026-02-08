@@ -59,8 +59,16 @@ function LoginForm() {
           variant: 'destructive',
         });
       } else {
-        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-        window.location.href = callbackUrl;
+        const callbackUrl = searchParams.get('callbackUrl');
+        if (callbackUrl && callbackUrl !== '/dashboard' && callbackUrl !== '/') {
+          window.location.href = callbackUrl;
+        } else {
+          // Fetch session to determine role-based redirect
+          const res = await fetch('/api/auth/session');
+          const session = await res.json();
+          const isAdmin = session?.user?.isSuperAdmin;
+          window.location.href = isAdmin ? '/admin' : '/dashboard';
+        }
       }
     } catch {
       toast({

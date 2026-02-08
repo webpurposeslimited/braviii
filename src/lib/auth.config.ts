@@ -16,6 +16,7 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isAdmin = !!(auth?.user as any)?.isSuperAdmin;
       const { pathname } = nextUrl;
 
       const publicPaths = [
@@ -45,10 +46,16 @@ export const authConfig: NextAuthConfig = {
 
       if (isStaticFile) return true;
       if (isApiRoute) return true;
-      if (isPublicPath) return true;
+      if (isPublicPath && !isLoggedIn) return true;
 
       // Redirect authenticated users away from login/signup
       if (isLoggedIn && (pathname === '/login' || pathname === '/signup')) {
+        const dest = isAdmin ? '/admin' : '/dashboard';
+        return Response.redirect(new URL(dest, nextUrl));
+      }
+
+      // Block non-admin users from /admin routes
+      if (isLoggedIn && !isAdmin && pathname.startsWith('/admin')) {
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
 
@@ -58,6 +65,7 @@ export const authConfig: NextAuthConfig = {
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
+        token.isSuperAdmin = (user as any).isSuperAdmin ?? false;
       }
 
       if (trigger === 'update' && session) {
@@ -69,6 +77,7 @@ export const authConfig: NextAuthConfig = {
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        (session.user as any).isSuperAdmin = token.isSuperAdmin ?? false;
       }
       return session;
     },
