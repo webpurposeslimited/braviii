@@ -77,7 +77,7 @@
     "zustand": "^4.5.2"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "node prisma/seed.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

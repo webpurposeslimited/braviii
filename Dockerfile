@@ -30,6 +30,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN mkdir -p public
 RUN npx prisma generate
+RUN npx esbuild prisma/seed.ts --bundle --platform=node --packages=external --outfile=prisma/seed.js
 RUN npm run build
 
 # Production image
@@ -49,10 +50,9 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/tsx ./node_modules/tsx
-COPY --from=builder /app/node_modules/esbuild ./node_modules/esbuild
 COPY --from=builder /app/node_modules/.bin/ ./node_modules/.bin/
 COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
+COPY --from=builder /app/package.json ./package.json
 
 # Set the correct permission for prerender cache
 RUN mkdir -p .next uploads
