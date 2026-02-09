@@ -5,6 +5,7 @@ import type { NextAuthConfig } from 'next-auth';
  * Used by middleware. Full config with adapter/providers is in auth.ts.
  */
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   session: {
     strategy: 'jwt',
   },
