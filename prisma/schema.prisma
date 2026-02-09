@@ -102,6 +102,9 @@ model Workspace {
   subscription      Subscription?
   creditsLedger     CreditsLedger[]
   tickets           Ticket[]
+  signals           Signal[]
+  bravigents        Bravigent[]
+  files             WorkspaceFile[]
 
   @@index([slug])
 }
@@ -1066,6 +1069,100 @@ model TicketStatusHistory {
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
+  @@index([createdAt])
+}
+
+// ==================== SIGNALS ====================
+
+model Signal {
+  id          String       @id @default(cuid())
+  workspaceId String
+  name        String
+  type        SignalType
+  status      SignalStatus @default(ACTIVE)
+  frequency   String       @default("daily")
+  folder      String?
+  config      Json?
+  lastRunAt   DateTime?
+  matchCount  Int          @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([type])
+}
+
+enum SignalType {
+  JOB_CHANGE
+  NEW_HIRE
+  JOB_POSTING
+  PROMOTION
+  NEWS_FUNDRAISING
+  LINKEDIN_BRAND_MENTION
+  WEB_INTENT
+  CUSTOM
+}
+
+enum SignalStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+// ==================== BRAVIGENTS (AI AGENTS) ====================
+
+model Bravigent {
+  id          String         @id @default(cuid())
+  workspaceId String
+  name        String
+  prompt      String         @db.Text
+  model       String         @default("auto")
+  version     Int            @default(1)
+  tools       String[]
+  status      BravigentStatus @default(DRAFT)
+  config      Json?
+  lastRunAt   DateTime?
+  createdById String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([status])
+}
+
+enum BravigentStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+// ==================== WORKSPACE FILES ====================
+
+model WorkspaceFile {
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  type        String   @default("table")
+  tags        String[]
+  isFavorite  Boolean  @default(false)
+  lastOpenedAt DateTime?
+  createdById String?
+  config      Json?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
   @@index([createdAt])
 }
 

@@ -43,7 +43,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         <DashboardSidebar isSuperAdmin={user.isSuperAdmin} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <DashboardHeader user={user} />
-          <main className="flex-1 overflow-y-auto bg-slate-50">
+          <main className="flex-1 overflow-y-auto bg-gray-50">
             {children}
           </main>
         </div>

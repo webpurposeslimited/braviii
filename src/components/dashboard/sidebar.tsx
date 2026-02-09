@@ -2,35 +2,26 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import {
-  LayoutDashboard,
-  Users,
-  Mail,
-  CheckCircle,
-  Linkedin,
-  BarChart3,
-  Settings,
-  CreditCard,
-  ChevronLeft,
   ChevronRight,
-  MessageSquare,
+  Home,
+  Users,
+  Building2,
+  Briefcase,
+  MapPin,
+  Zap,
+  Play,
+  Sparkles,
   Shield,
-  Search,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 
-const mainNavItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Leads', href: '/dashboard/leads', icon: Users },
-  { name: 'Lead Finder', href: '/dashboard/lead-finder', icon: Search },
-  { name: 'Verification', href: '/dashboard/verification', icon: CheckCircle },
-  { name: 'Sequences', href: '/dashboard/sequences', icon: Mail },
-  { name: 'LinkedIn Tasks', href: '/dashboard/linkedin', icon: Linkedin },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Support', href: '/dashboard/support', icon: MessageSquare },
+const findLeadsSubmenu = [
+  { name: 'Find people', href: '/dashboard/find-leads/people', icon: Users },
+  { name: 'Find companies', href: '/dashboard/find-leads/companies', icon: Building2 },
+  { name: 'Find jobs', href: '/dashboard/find-leads/jobs', icon: Briefcase },
+  { name: 'Find local businesses', href: '/dashboard/find-leads/local-businesses', icon: MapPin },
 ];
 
 interface DashboardSidebarProps {
@@ -39,90 +30,144 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ isSuperAdmin }: DashboardSidebarProps) {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
+  const [findLeadsOpen, setFindLeadsOpen] = useState(
+    pathname.startsWith('/dashboard/find-leads')
+  );
+
+  const isHome = pathname === '/dashboard';
+  const isFindLeads = pathname.startsWith('/dashboard/find-leads');
+  const isSignals = pathname === '/dashboard/signals';
+  const isCampaigns = pathname.startsWith('/dashboard/campaigns');
+  const isBravigents = pathname.startsWith('/dashboard/bravigents');
 
   return (
-    <aside
-      className={cn(
-        'relative flex flex-col h-full bg-white border-r border-slate-200 transition-all duration-300',
-        collapsed ? 'w-20' : 'w-64'
-      )}
-    >
-      <div className="flex items-center h-16 px-4 border-b border-slate-200">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="h-8 w-8 flex-shrink-0 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-lg font-bold text-white">B</span>
+    <aside className="flex flex-col h-full w-[220px] bg-white border-r border-gray-200 flex-shrink-0">
+      <div className="flex items-center h-14 px-5">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <div className="h-7 w-7 flex-shrink-0 bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-sm font-bold text-white">B</span>
           </div>
-          {!collapsed && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-xl font-bold text-black"
-            >
-              Bravilio
-            </motion.span>
-          )}
+          <span className="text-[17px] font-semibold text-gray-900 tracking-tight">
+            Bravilio
+          </span>
         </Link>
       </div>
 
-      <nav className="flex-1 py-4 px-3 space-y-0.5 overflow-y-auto">
-        {mainNavItems.map((item) => {
-          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
+      <nav className="flex-1 py-3 px-3 space-y-0.5 overflow-y-auto">
+        {/* Home */}
+        <Link
+          href="/dashboard"
+          className={cn(
+            'flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] font-medium transition-colors',
+            isHome
+              ? 'bg-gray-100 text-gray-900'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          )}
+        >
+          <Home className={cn('h-[18px] w-[18px]', isHome ? 'text-gray-700' : 'text-gray-400')} />
+          <span>Home</span>
+        </Link>
+
+        {/* Find Leads - expandable */}
+        <div>
+          <button
+            onClick={() => setFindLeadsOpen(!findLeadsOpen)}
+            className={cn(
+              'flex items-center justify-between w-full px-3 py-2 rounded-md text-[13.5px] font-medium transition-colors',
+              isFindLeads
+                ? 'bg-gray-100 text-gray-900'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <Users className={cn('h-[18px] w-[18px]', isFindLeads ? 'text-gray-700' : 'text-gray-400')} />
+              <span>Find Leads</span>
+            </div>
+            <ChevronRight
               className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
+                'h-3.5 w-3.5 text-gray-400 transition-transform duration-200',
+                findLeadsOpen && 'rotate-90'
               )}
-            >
-              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-blue-600' : 'text-slate-400')} />
-              {!collapsed && <span>{item.name}</span>}
-            </Link>
-          );
-        })}
+            />
+          </button>
+          {findLeadsOpen && (
+            <div className="ml-5 mt-0.5 space-y-0.5 border-l border-gray-200 pl-3">
+              {findLeadsSubmenu.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      'flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-[13px] transition-colors',
+                      isActive
+                        ? 'text-gray-900 font-medium bg-gray-50'
+                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    )}
+                  >
+                    <item.icon className="h-4 w-4 text-gray-400" />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Signals */}
+        <Link
+          href="/dashboard/signals"
+          className={cn(
+            'flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] font-medium transition-colors',
+            isSignals
+              ? 'bg-gray-100 text-gray-900'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          )}
+        >
+          <Zap className={cn('h-[18px] w-[18px]', isSignals ? 'text-gray-700' : 'text-gray-400')} />
+          <span>Signals</span>
+        </Link>
+
+        {/* Campaigns */}
+        <Link
+          href="/dashboard/campaigns"
+          className={cn(
+            'flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] font-medium transition-colors',
+            isCampaigns
+              ? 'bg-gray-100 text-gray-900'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          )}
+        >
+          <Play className={cn('h-[18px] w-[18px]', isCampaigns ? 'text-gray-700' : 'text-gray-400')} />
+          <span>Campaigns</span>
+        </Link>
+
+        {/* Bravigents */}
+        <Link
+          href="/dashboard/bravigents"
+          className={cn(
+            'flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] font-medium transition-colors',
+            isBravigents
+              ? 'bg-gray-100 text-gray-900'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+          )}
+        >
+          <Sparkles className={cn('h-[18px] w-[18px]', isBravigents ? 'text-gray-700' : 'text-gray-400')} />
+          <span>Bravigents</span>
+        </Link>
       </nav>
 
-      <div className="border-t border-slate-200 py-4 px-3 space-y-0.5">
-        {[
-          { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
-          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-          ...(isSuperAdmin ? [{ name: 'Admin Panel', href: '/admin', icon: Shield }] : []),
-        ].map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-slate-600 hover:text-blue-600 hover:bg-blue-50/50'
-              )}
-            >
-              <item.icon className={cn('h-5 w-5 flex-shrink-0', isActive ? 'text-blue-600' : 'text-slate-400')} />
-              {!collapsed && <span>{item.name}</span>}
-            </Link>
-          );
-        })}
-      </div>
-
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute -right-3 top-20 h-6 w-6 rounded-full border border-slate-200 bg-white text-slate-400 hover:text-blue-600"
-        onClick={() => setCollapsed(!collapsed)}
-      >
-        {collapsed ? (
-          <ChevronRight className="h-3 w-3" />
-        ) : (
-          <ChevronLeft className="h-3 w-3" />
-        )}
-      </Button>
+      {isSuperAdmin && (
+        <div className="border-t border-gray-200 py-3 px-3">
+          <Link
+            href="/admin"
+            className="flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+          >
+            <Shield className="h-[18px] w-[18px] text-gray-400" />
+            <span>Admin Panel</span>
+          </Link>
+        </div>
+      )}
     </aside>
   );
 }
