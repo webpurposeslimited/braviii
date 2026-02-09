@@ -61,8 +61,26 @@ function LoginForm() {
       } else {
         // Redirect based on role
         const dest = result.user?.isSuperAdmin ? '/admin' : '/dashboard';
-        const callbackUrl = searchParams.get('callbackUrl');
-        window.location.href = callbackUrl && callbackUrl !== '/' ? callbackUrl : dest;
+        const raw = searchParams.get('callbackUrl');
+
+        // Sanitize callbackUrl: only allow relative paths, strip absolute URLs
+        let safePath = dest;
+        if (raw) {
+          try {
+            // Handle absolute URLs — extract just the pathname
+            const url = new URL(raw, window.location.origin);
+            if (url.origin === window.location.origin && url.pathname !== '/') {
+              safePath = url.pathname;
+            }
+          } catch {
+            // Already a relative path like /admin
+            if (raw.startsWith('/') && raw !== '/') {
+              safePath = raw;
+            }
+          }
+        }
+
+        window.location.href = safePath;
       }
     } catch {
       toast({

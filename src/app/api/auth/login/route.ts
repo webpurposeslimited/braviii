@@ -30,8 +30,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    const isSecure = process.env.NEXTAUTH_URL?.startsWith('https://');
-    console.log('[AUTH] NEXTAUTH_URL:', process.env.NEXTAUTH_URL, 'isSecure:', isSecure);
+    // Detect HTTPS from actual request headers OR NEXTAUTH_URL
+    const proto = request.headers.get('x-forwarded-proto');
+    const isSecure = proto === 'https' || process.env.NEXTAUTH_URL?.startsWith('https://');
+    console.log('[AUTH] NEXTAUTH_URL:', process.env.NEXTAUTH_URL, 'proto:', proto, 'isSecure:', isSecure);
 
     const tokenPayload = {
       id: user.id,

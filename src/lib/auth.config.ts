@@ -47,7 +47,6 @@ export const authConfig: NextAuthConfig = {
 
       if (isStaticFile) return true;
       if (isApiRoute) return true;
-      if (isPublicPath && !isLoggedIn) return true;
 
       // Redirect authenticated users away from login/signup
       if (isLoggedIn && (pathname === '/login' || pathname === '/signup')) {
@@ -55,13 +54,23 @@ export const authConfig: NextAuthConfig = {
         return Response.redirect(new URL(dest, nextUrl));
       }
 
+      // Allow public paths for everyone (after the login redirect check above)
+      if (isPublicPath) return true;
+
       // Block non-admin users from /admin routes
       if (isLoggedIn && !isAdmin && pathname.startsWith('/admin')) {
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
 
-      // Must be logged in for all other routes
-      return isLoggedIn;
+      // Unauthenticated users on protected routes → redirect to /login
+      // with a RELATIVE callbackUrl (just the pathname) to avoid https:// absolute URLs
+      if (!isLoggedIn) {
+        const loginUrl = new URL('/login', nextUrl);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return Response.redirect(loginUrl);
+      }
+
+      return true;
     },
     async jwt({ token, user, trigger, session }) {
       if (user) {
