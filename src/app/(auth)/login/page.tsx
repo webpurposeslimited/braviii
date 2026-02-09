@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { authenticate } from './actions';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -45,19 +44,32 @@ function LoginForm() {
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
     try {
-      const result = await authenticate(data.email, data.password);
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
 
-      if (result?.error) {
+      const result = await res.json();
+
+      if (!res.ok || result.error) {
         toast({
           title: 'Error',
-          description: result.error,
+          description: result.error || 'Invalid email or password',
           variant: 'destructive',
         });
+      } else {
+        // Redirect based on role
+        const dest = result.user?.isSuperAdmin ? '/admin' : '/dashboard';
+        const callbackUrl = searchParams.get('callbackUrl');
+        window.location.href = callbackUrl && callbackUrl !== '/' ? callbackUrl : dest;
       }
-      // On success, the server action redirects automatically
     } catch {
-      // NEXT_REDIRECT throws here on success — that's expected.
-      // Only show error toast for real failures.
+      toast({
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
