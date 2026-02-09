@@ -24,25 +24,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    // Create JWT matching NextAuth's expected format
     const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
     if (!secret) {
       console.error('[AUTH] No AUTH_SECRET or NEXTAUTH_SECRET set');
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    const token = await encode({
-      token: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        picture: user.avatar,
-        isSuperAdmin: user.isSuperAdmin ?? false,
-        sub: user.id,
-      },
-      secret,
-      salt: 'authjs.session-token',
-    });
+    const isSecure = process.env.NEXTAUTH_URL?.startsWith('https://');
+    console.log('[AUTH] NEXTAUTH_URL:', process.env.NEXTAUTH_URL, 'isSecure:', isSecure);
+
+    const tokenPayload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      picture: user.avatar,
+      isSuperAdmin: user.isSuperAdmin ?? false,
+      sub: user.id,
+    };
+
+    // NextAuth v5 beta.15 may use either "authjs" or "next-auth" prefix.
+    // Set both cookie variants so the middleware can find the session regardless.
+    const cookieOptions = {
+      httpOnly: true,
+      secure: !!isSecure,
+      sameSite: 'lax' as const,
+      path: '/',
+      maxAge: 30 * 24 * 60 * 60, // 30 days
+    };
 
     const response = NextResponse.json({
       success: true,
@@ -52,21 +60,17 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Set the session cookie — name must match what NextAuth reads
-    const isSecure = process.env.NEXTAUTH_URL?.startsWith('https://');
-    const cookieName = isSecure
-      ? '__Secure-authjs.session-token'
-      : 'authjs.session-token';
+    // Variant 1: authjs.session-token (newer NextAuth v5)
+    const cookieName1 = isSecure ? '__Secure-authjs.session-token' : 'authjs.session-token';
+    const token1 = await encode({ token: tokenPayload, secret, salt: cookieName1 });
+    response.cookies.set(cookieName1, token1, cookieOptions);
 
-    response.cookies.set(cookieName, token, {
-      httpOnly: true,
-      secure: !!isSecure,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 30 * 24 * 60 * 60, // 30 days
-    });
+    // Variant 2: next-auth.session-token (older NextAuth v5 beta)
+    const cookieName2 = isSecure ? '__Secure-next-auth.session-token' : 'next-auth.session-token';
+    const token2 = await encode({ token: tokenPayload, secret, salt: cookieName2 });
+    response.cookies.set(cookieName2, token2, cookieOptions);
 
-    console.log('[AUTH] Login API success for:', email, 'cookie:', cookieName);
+    console.log('[AUTH] Login API success for:', email, 'cookies set:', cookieName1, cookieName2);
     return response;
   } catch (error) {
     console.error('[AUTH] Login API error:', error);
