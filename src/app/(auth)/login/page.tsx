@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { Suspense, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import { authenticate } from './actions';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -30,7 +30,6 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,36 +45,19 @@ function LoginForm() {
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
     try {
-      const result = await signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
+      const result = await authenticate(data.email, data.password);
 
       if (result?.error) {
         toast({
           title: 'Error',
-          description: 'Invalid email or password',
+          description: result.error,
           variant: 'destructive',
         });
-      } else {
-        const callbackUrl = searchParams.get('callbackUrl');
-        if (callbackUrl && callbackUrl !== '/dashboard' && callbackUrl !== '/') {
-          window.location.href = callbackUrl;
-        } else {
-          // Fetch session to determine role-based redirect
-          const res = await fetch('/api/auth/session');
-          const session = await res.json();
-          const isAdmin = session?.user?.isSuperAdmin;
-          window.location.href = isAdmin ? '/admin' : '/dashboard';
-        }
       }
+      // On success, the server action redirects automatically
     } catch {
-      toast({
-        title: 'Error',
-        description: 'Something went wrong. Please try again.',
-        variant: 'destructive',
-      });
+      // NEXT_REDIRECT throws here on success — that's expected.
+      // Only show error toast for real failures.
     } finally {
       setIsLoading(false);
     }
